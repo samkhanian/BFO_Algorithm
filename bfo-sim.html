@@ -1,547 +1,176 @@
-<!doctype html>
-<html lang="fa">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>شبیه‌سازی الگوریتم جستجوی باکتریایی (BFO) — نسخه نمایشی</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شبیه‌ساز الگوریتم جستجوی باکتریایی (BFO)</title>
+
 <style>
-  :root{
-    --bg:#f6f8fa; --card:#fff; --accent:#0b78c1; --muted:#666;
-  }
-  body{
-    margin:0;font-family:Tahoma, Arial, sans-serif;background:var(--bg);color:#222;
-  }
-  header{background:var(--accent);color:#fff;padding:14px 18px;text-align:center}
-  main{display:flex;gap:18px;padding:18px;flex-wrap:wrap}
-  .left, .right{background:var(--card);border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:14px;}
-  .left{flex:1 1 560px;min-width:320px}
-  .right{width:360px;min-width:300px}
-  h1{margin:0;font-size:20px}
-  h2{margin:6px 0 12px;font-size:16px;color:var(--accent)}
-  #canvasWrap{display:flex;flex-direction:column;align-items:center;gap:8px}
-  canvas{background:#fff;border:1px solid #e0e6ea;border-radius:6px}
-  #controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  button{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
-  button[disabled]{opacity:.5;cursor:not-allowed}
-  label{font-size:13px;color:var(--muted)}
-  #log{height:260px;overflow:auto;background:#0f1720;color:#e6f0ff;padding:10px;border-radius:6px;font-family:monospace;font-size:13px}
-  .info{font-size:13px;color:var(--muted);line-height:1.5}
-  .stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-  .chip{background:#eef6ff;padding:6px 8px;border-radius:6px;font-size:13px;color:#024}
-  input[type=range]{width:160px}
-  .legend{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-  .legend .item{display:flex;gap:6px;align-items:center}
-  .swatch{width:14px;height:14px;border-radius:50%;display:inline-block}
-  footer{padding:12px;text-align:center;color:var(--muted);font-size:13px}
-  /* responsive */
-  @media(max-width:900px){main{padding:12px} .right{width:100%}}
+    body {
+        font-family: sans-serif;
+        background: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        line-height: 1.8;
+    }
+
+    header {
+        background: #4caf50;
+        color: white;
+        padding: 15px;
+        font-size: 1.3rem;
+    }
+
+    .container {
+        padding: 15px;
+        max-width: 800px;
+        margin: auto;
+    }
+
+    button {
+        background: #4caf50;
+        color: white;
+        padding: 12px 22px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        margin: 10px 0;
+        width: 100%;
+    }
+
+    button:active {
+        transform: scale(0.98);
+    }
+
+    canvas {
+        background: white;
+        margin-top: 20px;
+        width: 100% !important;
+        height: auto !important;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+    }
+
+    .log-box {
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        max-height: 180px;
+        overflow-y: auto;
+        text-align: right;
+        font-size: 0.9rem;
+    }
 </style>
 </head>
 <body>
-<header>
-  <h1>شبیه‌سازی الگوریتم جستجوی باکتریایی (BFO) — نسخه نمایشی</h1>
-  <div style="font-size:13px;margin-top:6px">نمایش همزمان <strong>۵ باکتری</strong>، مسیرها و درخت تصمیم‌گیری پس از پایان</div>
-</header>
 
-<main>
-  <section class="left">
-    <h2>توضیح کوتاه الگوریتم</h2>
-    <div class="info">
-      <p>الگوریتم BFO (Bacterial Foraging Optimization) یک روش Population-based است که رفتار باکتری‌ها را شبیه‌سازی می‌کند. هر نسل معمولاً سه مرحله دارد:</p>
-      <ol>
-        <li><strong>Chemotaxis</strong> — باکتری‌ها حرکت محلی (تجربه‌محور) انجام می‌دهند تا مقدار تابع هدف را بهتر کنند.</li>
-        <li><strong>Reproduction</strong> — باکتری‌های موفق‌تر تکثیر می‌شوند و ضعیف‌ترها حذف می‌شوند.</li>
-        <li><strong>Elimination/Dispersal</strong> — برخی باکتری‌ها به‌صورت تصادفی پراکنده می‌شوند تا از گیر افتادن در مینیمم‌های محلی جلوگیری شود.</li>
-      </ol>
-      <p>این شبیه‌سازی یک نسخه نمایشی است: الگوریتم واقعیِ عددی را شبیه‌سازی می‌کنیم تا <em>رفتار جمعیت</em> را بصری ببینید.</p>
-    </div>
+<header>شبیه‌ساز رفتاری الگوریتم جستجوی باکتریایی (BFO)</header>
 
-    <h2>تنظیمات شبیه‌سازی</h2>
-    <div id="controls">
-      <button id="btnStart">شروع</button>
-      <button id="btnPause" disabled>توقف</button>
-      <button id="btnReset">بازنشانی</button>
-      <label>سرعت (ms): <input id="speed" type="range" min="100" max="1200" step="100" value="400"></label>
-      <label>تعداد باکتری: <input id="nPop" type="number" min="3" max="10" value="5" style="width:72px"></label>
-      <label>حداکثر نسل: <input id="maxGen" type="number" min="1" max="200" value="60" style="width:72px"></label>
-    </div>
+<div class="container">
+    <p>
+        در این شبیه‌ساز، ۵ باکتری هم‌زمان روی محور x حرکت می‌کنند تا به بهترین نقطه (کمترین مقدار تابع) برسند.
+        این نسخه مخصوص موبایل بهینه‌سازی شده است.
+    </p>
 
-    <div style="display:flex;gap:12px;margin-top:12px;align-items:center">
-      <div class="chip">تابع هدف: <strong>f(x) = (x - 3)^2</strong></div>
-      <div class="chip">دامنه: <strong>[0, 6]</strong> (اعداد صحیح)</div>
-      <div class="chip">گام (step size): <strong>1</strong></div>
-    </div>
+    <button onclick="startSimulation()">▶ شروع شبیه‌سازی</button>
 
-    <h2 style="margin-top:12px">کنترل‌های اضافی</h2>
-    <div class="info">
-      <p>در Reproduction، دو باکتری برتر تکثیر می‌شوند و جایگزین دو باکتری ضعیف می‌گردند. در Elimination/Dispersal، با احتمال ثابت برخی باکتری‌ها به موقعیت تصادفی منتقل می‌شوند.</p>
-    </div>
+    <canvas id="canvas" width="900" height="250"></canvas>
 
-    <h2 style="margin-top:12px">لاگ مرحله‌ای (گزارش)</h2>
-    <div id="log"></div>
-  </section>
-
-  <aside class="right">
-    <h2>شبیه‌سازی گرافیکی</h2>
-    <div id="canvasWrap">
-      <canvas id="simCanvas" width="760" height="220"></canvas>
-      <div class="legend" id="legend"></div>
-    </div>
-
-    <h2 style="margin-top:12px">درخت مسیر — پس از پایان</h2>
-    <canvas id="treeCanvas" width="340" height="340" style="margin-top:8px;border-radius:6px;"></canvas>
-
-    <div class="stat" style="margin-top:12px">
-      <div class="chip">جمعیت فعلی: <span id="popCount">5</span></div>
-      <div class="chip">نسل فعلی: <span id="genCount">0</span></div>
-      <div class="chip">مرحله: <span id="stageLabel">آماده</span></div>
-    </div>
-  </aside>
-</main>
-
-<footer>
-  دانشجو: جمال سامخانیان — درس: هوش مصنوعی — استاد: دکتر رویا نمیرانیان — نسخه نمایشی شبیه‌ساز BFO
-</footer>
+    <div class="log-box" id="logBox"></div>
+</div>
 
 <script>
-/*
-  Single-file BFO Simulator (demo)
-  - شبیه‌سازی نمایشی الگوریتم BFO با ۵ باکتری بصری
-  - مسیرها (line trails) رسم می‌شوند
-  - پس از پایان، درخت مسیر رسم می‌شود
-  - شبیه‌سازی تصادفی است (Elimination/Dispersal) => هر اجرا متفاوت خواهد بود
-*/
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-/* ---------- تنظیمات داخلی الگوریتم (قابل تغییر) ---------- */
-const DOMAIN_MIN = 0;
-const DOMAIN_MAX = 6;
-const TARGET = 3;       // کمینه شناخته‌شده در این دمو
-const STEP_SIZE = 1;    // اندازه هر حرکت (چون دامنه صحیح است)
-const REPRODUCE_COUNT = 2; // چند تا بهترین تکثیر شوند (جایگزینی ضعیف ترین‌ها)
-const ELIM_PROB = 0.5;     // احتمال حذف/پراکندگی هر باکتری در فاز Elimination
+let bacteria = [];
+const targetX = 3; // نقطه بهینه تابع
+const scale = canvas.width / 10; // مقیاس محور x
 
-/* ---------- المان‌ها و کانواس ---------- */
-const simCanvas = document.getElementById('simCanvas');
-const sCtx = simCanvas.getContext('2d');
-const treeCanvas = document.getElementById('treeCanvas');
-const tCtx = treeCanvas.getContext('2d');
-const logDiv = document.getElementById('log');
-
-const btnStart = document.getElementById('btnStart');
-const btnPause = document.getElementById('btnPause');
-const btnReset = document.getElementById('btnReset');
-const speedInput = document.getElementById('speed');
-const nPopInput = document.getElementById('nPop');
-const maxGenInput = document.getElementById('maxGen');
-const popCountSpan = document.getElementById('popCount');
-const genCountSpan = document.getElementById('genCount');
-const stageLabel = document.getElementById('stageLabel');
-const legendDiv = document.getElementById('legend');
-
-let animationHandle = null;
-let running = false;
-
-/* ---------- رنگ‌ها و آیدی باکتری‌ها ---------- */
-const defaultColors = ['#1f77b4','#ff7f0e','#2ca02c','#9467bd','#d62728','#8c564b','#e377c2','#7f7f7f'];
-function colorFor(i){ return defaultColors[i % defaultColors.length]; }
-
-/* ---------- ساختار داده برای باکتری و نگهداری مسیرها ---------- */
-class Bacterium {
-  constructor(id, x){
-    this.id = id;
-    this.x = x;            // موقعیت فعلی (صحیح در این دمو)
-    this.path = [x];       // مسیر تاریخی برای رسم درخت و trail
-  }
-  fitness(){ return (this.x - TARGET) ** 2; }
-  // Chemotaxis: یک حرکت مکرر تا زمانی که بهبود وجود دارد (Run/Tumble ساده)
-  chemotaxisStep(){
-    // بررسی دو جهت مجاور (چون میدان 1بعدی است) و انتخاب جهت بهتر
-    const left = Math.max(DOMAIN_MIN, this.x - STEP_SIZE);
-    const right = Math.min(DOMAIN_MAX, this.x + STEP_SIZE);
-    const curFit = this.fitness();
-    const leftFit = (left - TARGET) ** 2;
-    const rightFit = (right - TARGET) ** 2;
-    // اگر هیچ کدام بهتر نیست، بازگشت false (توقف حرکت)
-    if(leftFit >= curFit && rightFit >= curFit) return false;
-    // انتخاب بهترین جهت از بین چپ/راست که بیشترین بهبود را دارد
-    let chosen = this.x;
-    if(leftFit < curFit && leftFit <= rightFit) chosen = left;
-    else if(rightFit < curFit && rightFit < leftFit) chosen = right;
-    // حرکت یک گام به سمت chosen
-    if(chosen !== this.x){
-      this.x = chosen;
-      this.path.push(this.x);
-      return true;
-    }
-    return false;
-  }
+function log(msg) {
+    const box = document.getElementById("logBox");
+    box.innerHTML += msg + "<br>";
+    box.scrollTop = box.scrollHeight;
 }
 
-/* ---------- حالت شبیه‌سازی ---------- */
-let population = [];      // آرایه باکتری‌ها
-let historyPerGen = [];   // ذخیره وضعیت هر نسل برای رسم درخت: array of arrays
-let gen = 0;
-let maxGen = parseInt(maxGenInput.value,10);
-
-/* ---------- آماده‌سازی اولیه شبیه‌سازی ---------- */
-function initPopulation(n){
-  population = [];
-  // توزیع اولیه: مقادیر صحیح یکنواخت در دامنه (یا می‌توان random کرد)
-  // اینجا برای قابل‌پیش‌بینی بودن، مقادیر از 0..n-1 قرار می‌گیرد و اگر بیشتر باشد از مقادیر بالا استفاده می‌شود
-  for(let i=0;i<n;i++){
-    let pos = Math.min(DOMAIN_MAX, i); // 0,1,2,3,4...
-    population.push(new Bacterium(i+1, pos));
-  }
-  historyPerGen = [];
-  gen = 0;
-  updateIndicators();
-  logClear();
-  log(`جمعیت اولیه: ${population.map(b=>b.x).join(', ')}`);
-  pushHistory();
+function reset() {
+    bacteria = [
+        { id: "B1", x: 0 },
+        { id: "B2", x: 1 },
+        { id: "B3", x: 2 },
+        { id: "B4", x: 4 },
+        { id: "B5", x: 5 }
+    ];
+    document.getElementById("logBox").innerHTML = "";
 }
 
-/* ---------- تاریخچه نسل current را ثبت می‌کنیم ---------- */
-function pushHistory(){
-  historyPerGen.push(population.map(b=>b.x));
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // محور
+    ctx.beginPath();
+    ctx.moveTo(0, 150);
+    ctx.lineTo(canvas.width, 150);
+    ctx.strokeStyle = "#444";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // نقطه هدف
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(targetX * scale, 150, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillText("هدف (3)", targetX * scale - 20, 140);
+
+    // باکتری‌ها
+    bacteria.forEach(b => {
+        ctx.fillStyle = "#2196f3";
+        ctx.beginPath();
+        ctx.arc(b.x * scale, 150, 12, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#000";
+        ctx.fillText(b.id, b.x * scale - 6, 180);
+    });
 }
 
-/* ---------- مرحله Chemotaxis برای کل جمعیت (همزمان) ----------
-    پیاده‌سازی: هر باکتری مرتباً قدم می‌زند تا دیگر بهبود نبیند (local run).
-    اما در شبیه‌سازی انیمیشنی ما هر گام از حرکت همه باکتری‌ها را مرحله‌ای نشان می‌دهیم.
-    برای ساده‌سازی، ما برای هر باکتری یک حلقه داخلی می‌زنیم تا مسیرش تا توقف ثبت شود،
-    سپس نسلِ بعدی نمایش داده می‌شود.
-*/
-function doChemotaxisAnimated(onComplete){
-  stageLabel.textContent = 'Chemotaxis';
-  log(`\n--- Chemotaxis نسل ${gen+1} ---`);
-  // برای نمایش مرحله‌ای: ما برای هر باکتری مراحل داخل را یکجا محاسبه می‌کنیم
-  // سپس با انیمیشن موقعیت‌ها را نمایش می‌کنیم تا کاربر تغییرات را ببیند.
-  const perBacteriumNewPaths = [];
-  for(const b of population){
-    // برای هر باکتری مسیر حرکت تا زمانی که دیگر بهبود نیابد
-    const localPath = [];
-    while(true){
-      const moved = b.chemotaxisStep();
-      if(!moved) break;
-      localPath.push(b.x);
-      // اگر مسیر بسیار طولانی بود، جلوگیری (حفاظت)
-      if(localPath.length > 20) break;
-    }
-    perBacteriumNewPaths.push(localPath);
-  }
-  // اکنون perBacteriumNewPaths شامل مسیرهای جدید است (ممکن است خالی برای برخی)
-  // برای انیمیشن: ما مرحله‌ها را بر اساس بیشترین طول مرحله بین باکتری‌ها پخش می‌کنیم
-  const maxSteps = Math.max(...perBacteriumNewPaths.map(p=>p.length),0);
-  let stepIndex = 0;
-  const speed = parseInt(speedInput.value,10);
-  function animateStep(){
-    // در هر فریم، برای هر باکتری اگر قدمی در stepIndex دارد آن را جلو می‌بریم
-    let any = false;
-    for(let i=0;i<population.length;i++){
-      const p = perBacteriumNewPaths[i];
-      if(stepIndex < p.length){
-        population[i].x = p[stepIndex]; // موقعیت را بروزرسانی می‌کنیم
-        any = true;
-      }
-    }
-    drawSimulation();
-    if(stepIndex < maxSteps-1){
-      stepIndex++;
-      animationHandle = setTimeout(animateStep, speed*0.5);
-    } else {
-      // پایان chemotaxis انیمیشنی برای این نسل
-      log(`جمعیت بعد از Chemotaxis: ${population.map(b=>b.x).join(', ')}`);
-      pushHistory();
-      onComplete();
-    }
-  }
-  // شروع انیمیشن (اگر هیچ حرکتی نباشد، سریع به onComplete می‌رویم)
-  if(maxSteps===0){
-    log(`(هیچ باکتری‌ای حرکت نکرد)`);
-    onComplete();
-  } else {
-    animateStep();
-  }
+function chemotaxisStep() {
+    bacteria.forEach(b => {
+        if (b.x < targetX) b.x += 1;
+        else if (b.x > targetX) b.x -= 1;
+
+        log(`${b.id} → حرکت کرد به x = ${b.x}`);
+    });
 }
 
-/* ---------- Reproduction: مرتب‌سازی براساس fitness و تکثیر n برتر ----------
-   ما دو باکتری ضعیف را با کلون (کپی) از بهترین‌ها جایگزین می‌کنیم.
-*/
-function doReproduction(){
-  stageLabel.textContent = 'Reproduction';
-  log(`\n--- Reproduction (نسل ${gen+1}) ---`);
-  // محاسبه و مرتب‌سازی کپی‌شده (بدون دستکاری مستقیم در ترتیب اصلی تا بعد)
-  const sorted = [...population].sort((a,b)=>a.fitness()-b.fitness());
-  log(`مقادیر fitness (ترتیب بهتر→ضعیف): ${sorted.map(b=>b.fitness()).join(', ')}`);
-  // Replace worst REPRODUCE_COUNT with clones of best REPRODUCE_COUNT
-  for(let i=0;i<REPRODUCE_COUNT;i++){
-    const best = sorted[i];
-    const worst = sorted[sorted.length-1-i];
-    // جایگزینی مکان worst با مکان best (clone)
-    worst.x = best.x;
-    worst.path.push(worst.x);
-  }
-  log(`جمعیت بعد از Reproduction: ${population.map(b=>b.x).join(', ')}`);
-  pushHistory();
+function startSimulation() {
+    reset();
+    draw();
+    log("شروع شبیه‌سازی...");
+
+    let step = 0;
+
+    const timer = setInterval(() => {
+        step++;
+
+        chemotaxisStep();
+        draw();
+
+        if (bacteria.every(b => b.x === targetX)) {
+            log("<b>تمام باکتری‌ها به نقطه بهینه رسیدند!</b>");
+            clearInterval(timer);
+        }
+
+        if (step > 15) clearInterval(timer); // برای ایمنی
+    }, 900);
 }
 
-/* ---------- Elimination/Dispersal: با احتمال ELIM_PROB برخی باکتری‌ها جا‌به‌جا می‌شوند ----------
-   تو این دمو، برای هر باکتری با احتمال ELIM_PROB یک موقعیت تصادفی (در دامنه) انتخاب می‌کنیم.
-*/
-function doElimination(){
-  stageLabel.textContent = 'Elimination/Dispersal';
-  log(`\n--- Elimination/Dispersal (نسل ${gen+1}) ---`);
-  for(const b of population){
-    if(Math.random() < ELIM_PROB){
-      const newPos = Math.floor(Math.random()*(DOMAIN_MAX - DOMAIN_MIN + 1)) + DOMAIN_MIN;
-      b.x = newPos;
-      b.path.push(b.x);
-      log(`باکتری ${b.id} پراکنده شد → ${b.x}`);
-    }
-  }
-  log(`جمعیت بعد از Elimination/Dispersal: ${population.map(b=>b.x).join(', ')}`);
-  pushHistory();
-}
-
-/* ---------- شرط همگرایی ----------
-   ما زمانی تمام می‌کنیم که همه باکتری‌ها در مکان TARGET قرار داشته باشند
-   یا به تعداد نسلِ مشخص (maxGen) برسیم.
-*/
-function checkConverged(){
-  return population.every(b => b.x === TARGET);
-}
-
-/* ---------- حلقه نسل‌ها (نسل‌به‌نسل، هر نسل: Chemotaxis -> Reproduction -> Elimination) ----------
-   ترتیب: اجراه‌ای است، اما هر مرحله انیمیشنی خودش را دارد.
-*/
-async function runGenerations(){
-  running = true;
-  btnStart.disabled = true;
-  btnPause.disabled = false;
-  btnReset.disabled = true;
-  maxGen = parseInt(maxGenInput.value,10);
-  const speed = parseInt(speedInput.value,10);
-
-  while(running && gen < maxGen){
-    gen++;
-    genCountSpan.textContent = gen;
-    // Chemotaxis با انیمیشن
-    await new Promise(res => doChemotaxisAnimated(res));
-    if(!running) break;
-    // Reproduction (کوتاه، بدون انیمیشن جدا - ولی بلافاصله نمایش داده می‌شود)
-    doReproduction();
-    drawSimulation();
-    await sleep(speed*0.4);
-    if(!running) break;
-    // Elimination/Dispersal (نمایش پیام و انیمیشن ساده)
-    doElimination();
-    drawSimulation();
-    await sleep(speed*0.4);
-    if(checkConverged()){
-      log('\n== همه باکتری‌ها به کمینه همگرا شدند ==');
-      break;
-    }
-    // ادامه نسل بعد
-  }
-
-  // پایان اجرا
-  running = false;
-  btnStart.disabled = false;
-  btnPause.disabled = true;
-  btnReset.disabled = false;
-  stageLabel.textContent = 'پایان';
-  // درخت مسیر را رسم کن
-  drawTree();
-  log('\n--- پایان شبیه‌سازی ---');
-}
-
-/* ---------- رسم شبیه‌سازی (باکتری‌ها و trail) ---------- */
-function drawSimulation(){
-  sCtx.clearRect(0,0,simCanvas.width,simCanvas.height);
-  const margin = 40;
-  const lineY = simCanvas.height / 2;
-  // خط محور
-  sCtx.beginPath();
-  sCtx.moveTo(margin, lineY);
-  sCtx.lineTo(simCanvas.width - margin, lineY);
-  sCtx.strokeStyle = '#999';
-  sCtx.lineWidth = 2;
-  sCtx.stroke();
-  // رسم تیک‌مارک‌ها و اعداد دامنه
-  const domainLen = DOMAIN_MAX - DOMAIN_MIN;
-  for(let v=DOMAIN_MIN; v<=DOMAIN_MAX; v++){
-    const x = margin + (v - DOMAIN_MIN)/domainLen * (simCanvas.width - 2*margin);
-    sCtx.beginPath();
-    sCtx.moveTo(x, lineY-8);
-    sCtx.lineTo(x, lineY+8);
-    sCtx.strokeStyle = '#bbb';
-    sCtx.lineWidth = 1;
-    sCtx.stroke();
-    sCtx.fillStyle = '#333';
-    sCtx.font = '13px Tahoma';
-    sCtx.fillText(String(v), x-6, lineY+26);
-  }
-  // رسم trailها (خط‌های مسیر گذشته) — برای دید بهتر از هر باکتری خطوط پشت آن کشیده می‌شود
-  for(let i=0;i<population.length;i++){
-    const b = population[i];
-    const col = colorFor(i);
-    sCtx.beginPath();
-    const pts = b.path;
-    for(let k=0;k<pts.length;k++){
-      const x = margin + (pts[k] - DOMAIN_MIN)/domainLen * (simCanvas.width - 2*margin);
-      const y = lineY - 30 + (i%3)*14; // offset vertical کوچک تا خط‌ها تداخل کمتری داشته باشند
-      if(k===0) sCtx.moveTo(x,y);
-      else sCtx.lineTo(x,y);
-    }
-    sCtx.strokeStyle = hexToRgba(col, 0.85);
-    sCtx.lineWidth = 2.5;
-    sCtx.stroke();
-  }
-  // رسم خودِ باکتری‌ها (دایره‌ها) — با رنگ مشخص و شناسه
-  for(let i=0;i<population.length;i++){
-    const b = population[i];
-    const col = colorFor(i);
-    const x = margin + (b.x - DOMAIN_MIN)/domainLen * (simCanvas.width - 2*margin);
-    const y = lineY;
-    // سایه و دایره
-    sCtx.beginPath();
-    sCtx.fillStyle = col;
-    sCtx.strokeStyle = '#222';
-    sCtx.lineWidth = 1;
-    sCtx.arc(x,y,12,0,Math.PI*2);
-    sCtx.fill();
-    sCtx.stroke();
-    // متن id
-    sCtx.fillStyle = '#fff';
-    sCtx.font = '12px Tahoma';
-    sCtx.fillText('B'+b.id, x-10, y+5);
-  }
-  // legend
-  legendDiv.innerHTML = '';
-  for(let i=0;i<population.length;i++){
-    const el = document.createElement('div');
-    el.className = 'item';
-    el.innerHTML = `<div class="swatch" style="background:${colorFor(i)}"></div><div style="font-size:13px">B${population[i].id}: x=${population[i].x}</div>`;
-    legendDiv.appendChild(el);
-  }
-}
-
-/* ---------- رسم درخت مسیر از historyPerGen ----------
-   نمایش درخت ساده: محور افقی = نسل (0..G) ، محور عمودی = باکتری (id index)
-   هر گره موقعیت را نشان می‌دهد و خطوط به نسل بعد وصل می‌شود (همان باکتری بر اساس index)
-*/
-function drawTree(){
-  tCtx.clearRect(0,0,treeCanvas.width,treeCanvas.height);
-  const w = treeCanvas.width, h = treeCanvas.height;
-  const padding = 24;
-  const gens = historyPerGen.length;
-  if(gens===0) return;
-  const cols = gens;
-  const rows = population.length;
-  const cellW = (w - 2*padding) / Math.max(1, cols-1);
-  const cellH = (h - 2*padding) / rows;
-  // عنوان
-  tCtx.fillStyle = '#0b78c1';
-  tCtx.font = '13px Tahoma';
-  tCtx.fillText('درخت مسیر (نسل →)', padding, 16);
-  // رسم گره‌ها و خطوط
-  for(let g=0; g<cols; g++){
-    const genState = historyPerGen[g];
-    for(let r=0; r<rows; r++){
-      const x = padding + g * cellW;
-      const y = padding + r * cellH + cellH/2;
-      // گره
-      tCtx.beginPath();
-      const col = colorFor(r);
-      tCtx.fillStyle = col;
-      tCtx.arc(x, y, 10, 0, Math.PI*2);
-      tCtx.fill();
-      tCtx.fillStyle = '#fff';
-      tCtx.font = '11px Tahoma';
-      tCtx.fillText(String(genState[r]), x-6, y+4);
-      // متن id در ستون اول
-      if(g===0){
-        tCtx.fillStyle = '#222';
-        tCtx.fillText('B'+population[r].id, 4, y+4);
-      }
-      // اتصال به گره قبلی (همان ردیف)
-      if(g>0){
-        const px = padding + (g-1) * cellW;
-        const py = padding + r * cellH + cellH/2;
-        tCtx.beginPath();
-        tCtx.moveTo(px, py);
-        tCtx.lineTo(x, y);
-        tCtx.strokeStyle = '#999';
-        tCtx.lineWidth = 1;
-        tCtx.stroke();
-      }
-    }
-  }
-}
-
-/* ---------- ابزارهای کمکی ---------- */
-function sleep(ms){ return new Promise(res=>setTimeout(res,ms)); }
-function log(msg){
-  logDiv.textContent += msg + '\n';
-  logDiv.scrollTop = logDiv.scrollHeight;
-}
-function logClear(){ logDiv.textContent = ''; }
-function updateIndicators(){
-  popCountSpan.textContent = population.length;
-  genCountSpan.textContent = gen;
-}
-function hexToRgba(hex, alpha=1){
-  // hex like #rrggbb
-  const m = hex.replace('#','');
-  const r = parseInt(m.slice(0,2),16), g = parseInt(m.slice(2,4),16), b = parseInt(m.slice(4,6),16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-
-/* ---------- کنترل‌ها: Start / Pause / Reset ---------- */
-btnStart.addEventListener('click', async ()=>{
-  if(running) return;
-  // خواندن تنظیمات
-  const n = parseInt(nPopInput.value,10) || 5;
-  popCountSpan.textContent = n;
-  initPopulation(n);
-  drawSimulation();
-  // اجرای نسل‌ها
-  runGenerations().catch(err=>{ console.error(err); running=false; });
-});
-
-btnPause.addEventListener('click', ()=>{
-  if(!running) return;
-  // توقف اجرای حلقه — ما از flag استفاده می‌کنیم تا بعد از فریم فعلی حلقه متوقف شود
-  running = false;
-  btnPause.disabled = true;
-  stageLabel.textContent = 'متوقف';
-});
-
-btnReset.addEventListener('click', ()=>{
-  // توقف و بازنشانی همه چیز
-  running = false;
-  clearTimeout(animationHandle);
-  initPopulation(parseInt(nPopInput.value,10) || 5);
-  drawSimulation();
-  tCtx.clearRect(0,0,treeCanvas.width,treeCanvas.height);
-  stageLabel.textContent = 'آماده';
-});
-
-/* ---------- مقداردهی اولیه صفحه ---------- */
-(function boot(){
-  initPopulation(parseInt(nPopInput.value,10) || 5);
-  drawSimulation();
-  // مقداردهی legend اولیه
-  legendDiv.innerHTML = '';
-  for(let i=0;i< (parseInt(nPopInput.value,10) || 5); i++){
-    const el = document.createElement('div');
-    el.className = 'item';
-    el.style.display='flex'; el.style.alignItems='center'; el.style.gap='6px';
-    el.innerHTML = `<div class="swatch" style="background:${colorFor(i)}"></div><div style="font-size:13px">B${i+1}</div>`;
-    legendDiv.appendChild(el);
-  }
-})();
-
+draw();
 </script>
+
 </body>
 </html>
