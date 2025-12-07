@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BFO Interactive Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Bacterial Foraging Optimization (BFO)</h1>
+    <div class="lang-switch">
+      <button id="btn-fa">فارسی</button>
+      <button id="btn-en">English</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="content"></section>
+
+    <section id="algorithm-demo">
+      <h2>نمونه اجرای الگوریتم / Algorithm Demo</h2>
+      <canvas id="bfoCanvas" width="600" height="200"></canvas>
+      <button id="runBFO">اجرا / Run BFO</button>
+      <div id="bfo-output"></div>
+    </section>
+
+    <section id="flowchart">
+      <h2>Flowchart / نمودار مرحله‌ای الگوریتم</h2>
+      <img src="assets/flowchart.png" alt="BFO Flowchart" width="100%">
+    </section>
+  </main>
+
+  <script src="bfoAlgorithm.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
