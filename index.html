@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bacterial Foraging Optimization (BFO)</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الگوریتم جستجوی باکتریایی (BFO)</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Bacterial Foraging Optimization (BFO)</h1>
-    <div class="lang-switch">
-      <button id="btn-fa">فارسی</button>
-      <button id="btn-en">English</button>
-    </div>
-  </header>
+<header>
+  <h1>الگوریتم جستجوی باکتریایی (BFO)</h1>
+</header>
 
-  <main>
-    <!-- بخش نمایش متن تحقیق -->
-    <section id="content"></section>
+<main>
+  <!-- توضیحات الگوریتم -->
+  <section id="description">
+    <h2>توضیح الگوریتم</h2>
+    <p>
+      الگوریتم جستجوی باکتریایی (BFO) یک روش بهینه‌سازی الهام‌گرفته از رفتار باکتری‌ها است.  
+      چند باکتری همزمان در فضای جستجو حرکت می‌کنند و با حرکت Chemotaxis، به دنبال کمینه تابع هدف می‌روند.  
+      باکتری‌های موفق تکثیر می‌شوند و باکتری‌های ضعیف به صورت تصادفی پراکنده می‌شوند (Elimination/Dispersal) تا از گیر افتادن در مینیمم‌های محلی جلوگیری شود.
+    </p>
+  </section>
 
-    <!-- بخش اجرای الگوریتم -->
-    <section id="algorithm-demo">
-      <h2>نمونه اجرای الگوریتم / Algorithm Demo</h2>
-      <canvas id="bfoCanvas" width="600" height="200"></canvas>
-      <button id="runBFO">اجرا / Run BFO</button>
-      <div id="bfo-output"></div>
-    </section>
-  </main>
+  <!-- اجرای الگوریتم -->
+  <section id="algorithm-demo">
+    <h2>اجرای الگوریتم</h2>
+    <button id="runBFO">اجرا</button>
+    <pre id="bfo-output"></pre>
+    <canvas id="bfoCanvas" width="600" height="200"></canvas>
+  </section>
+</main>
 
-  <!-- اسکریپت‌ها -->
-  <script src="bfoAlgorithm.js"></script>
-  <script src="script.js"></script>
+<script src="bfoAlgorithm.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
