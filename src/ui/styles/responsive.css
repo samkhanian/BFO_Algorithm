@@ -218,30 +218,6 @@
   }
 }
 
-/* Dark Mode Adjustments */
-@media (prefers-color-scheme: dark) {
-  .card {
-    background-color: var(--color-bg-elevation-1);
-    border-color: var(--color-border-dark);
-  }
-
-  .btn--outline {
-    border-color: var(--color-border-dark);
-  }
-
-  input,
-  select,
-  textarea {
-    background-color: var(--color-bg-elevation-1);
-    border-color: var(--color-border-dark);
-    color: var(--color-text-white);
-  }
-
-  .alert {
-    border-left-width: 4px;
-  }
-}
-
 /* High Contrast Mode */
 @media (prefers-contrast: more) {
   a {

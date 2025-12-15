@@ -2,7 +2,7 @@ const headerHTML = `
 <nav class="navbar">
   <div class="navbar__container container flex-between">
     <div class="navbar__logo">
-      <a href="/">
+      <a href="./index.html">
         <i class="fas fa-dna"></i>
         <span>BFO Lab</span>
       </a>
@@ -14,7 +14,7 @@ const headerHTML = `
 
     <ul class="navbar__menu" id="navbarMenu">
       <li class="navbar__item">
-        <a href="/" class="navbar__link" data-page="home">
+        <a href="./index.html" class="navbar__link" data-page="home">
           <i class="fas fa-home"></i>
           <span data-i18n="nav.home">خانه</span>
         </a>
