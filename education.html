@@ -24,55 +24,6 @@
     />
   </head>
   <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-      <div class="navbar__container container flex-between">
-        <div class="navbar__logo">
-          <a href="/">
-            <i class="fas fa-dna"></i>
-            <span>BFO Lab</span>
-          </a>
-        </div>
-
-        <button class="navbar__toggle" id="navbarToggle" aria-label="فهرست ناویگیشن">
-          <i class="fas fa-bars"></i>
-        </button>
-
-        <ul class="navbar__menu" id="navbarMenu">
-          <li class="navbar__item">
-            <a href="/" class="navbar__link">
-              <i class="fas fa-home"></i>
-              <span>خانه</span>
-            </a>
-          </li>
-          <li class="navbar__item">
-            <a href="education.html" class="navbar__link active" data-page="education">
-              <i class="fas fa-book"></i>
-              <span>آموزش</span>
-            </a>
-          </li>
-          <li class="navbar__item">
-            <a href="laboratory.html" class="navbar__link">
-              <i class="fas fa-flask"></i>
-              <span>آزمایشگاه</span>
-            </a>
-          </li>
-          <li class="navbar__item">
-            <a href="about.html" class="navbar__link">
-              <i class="fas fa-circle-info"></i>
-              <span>درباره</span>
-            </a>
-          </li>
-          <li class="navbar__item navbar__divider"></li>
-          <li class="navbar__item">
-            <button class="navbar__lang-toggle" id="langToggle" aria-label="تغییر زبان">
-              <i class="fas fa-globe"></i>
-              <span>EN</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </nav>
 
     <!-- Main Content -->
     <main class="education-main">
@@ -81,43 +32,43 @@
         <nav class="lessons-nav">
           <h3 class="lessons-nav__title">
             <i class="fas fa-book-open"></i>
-            درسنامه‌ها
+            <span data-i18n="education.title">درسنامه‌ها</span>
           </h3>
           <ul class="lessons-nav__list" id="lessonsList">
             <li class="lessons-nav__item">
               <button class="lessons-nav__link active" data-lesson="intro">
                 <span class="lessons-nav__number">۱</span>
-                <span class="lessons-nav__title-text">درآمدی و تاریخچه</span>
+                <span class="lessons-nav__title-text" data-i18n="education.intro">درآمدی و تاریخچه</span>
               </button>
             </li>
             <li class="lessons-nav__item">
               <button class="lessons-nav__link" data-lesson="bacteria">
                 <span class="lessons-nav__number">۲</span>
-                <span class="lessons-nav__title-text">رفتار باکتری</span>
+                <span class="lessons-nav__title-text" data-i18n="education.bacteria">رفتار باکتری</span>
               </button>
             </li>
             <li class="lessons-nav__item">
               <button class="lessons-nav__link" data-lesson="chemotaxis">
                 <span class="lessons-nav__number">۳</span>
-                <span class="lessons-nav__title-text">شیمی‌جویی</span>
+                <span class="lessons-nav__title-text" data-i18n="education.chemotaxis">شیمی‌جویی</span>
               </button>
             </li>
             <li class="lessons-nav__item">
               <button class="lessons-nav__link" data-lesson="algorithm">
                 <span class="lessons-nav__number">۴</span>
-                <span class="lessons-nav__title-text">مراحل الگوریتم</span>
+                <span class="lessons-nav__title-text" data-i18n="education.algorithm">مراحل الگوریتم</span>
               </button>
             </li>
             <li class="lessons-nav__item">
               <button class="lessons-nav__link" data-lesson="tsp">
                 <span class="lessons-nav__number">۵</span>
-                <span class="lessons-nav__title-text">مسئله TSP</span>
+                <span class="lessons-nav__title-text" data-i18n="education.tsp">مسئله TSP</span>
               </button>
             </li>
             <li class="lessons-nav__item">
               <button class="lessons-nav__link" data-lesson="comparison">
                 <span class="lessons-nav__number">۶</span>
-                <span class="lessons-nav__title-text">مقایسه الگوریتم‌ها</span>
+                <span class="lessons-nav__title-text" data-i18n="education.comparison">مقایسه الگوریتم‌ها</span>
               </button>
             </li>
           </ul>
@@ -126,7 +77,7 @@
         <!-- Progress Indicator -->
         <div class="education-sidebar__progress">
           <div class="progress-header">
-            <span>پیشرفت</span>
+            <span data-i18n="education.progress">پیشرفت</span>
             <span id="progressPercent">0%</span>
           </div>
           <div class="progress-bar">
@@ -158,7 +109,7 @@
         <div class="lesson-navigation">
           <button class="btn btn--outline" id="prevLessonBtn">
             <i class="fas fa-arrow-right"></i>
-            درس قبلی
+            <span data-i18n="education.previousLesson">درس قبلی</span>
           </button>
 
           <div class="lesson-nav__progress">
@@ -166,19 +117,12 @@
           </div>
 
           <button class="btn btn--outline" id="nextLessonBtn">
-            درس بعدی
+            <span data-i18n="education.nextLesson">درس بعدی</span>
             <i class="fas fa-arrow-left"></i>
           </button>
         </div>
       </div>
     </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <p>&copy; 2025 BFO Educational Platform | MIT License</p>
-      </div>
-    </footer>
 
     <!-- Scripts -->
     <script type="module" src="src/ui/managers/navigation.manager.js"></script>

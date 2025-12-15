@@ -100,7 +100,18 @@
   --z-tooltip: 1500;
 }
 
-/* Dark Mode Support */
+/* Dark Mode - Explicit Class */
+body.dark-mode {
+  --color-bg-light: #0f172a;
+  --color-bg-elevation-1: #1e293b;
+  --color-bg-elevation-1-dark: #0f172a;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-border: #475569;
+  --color-border-dark: #334155;
+}
+
+/* Dark Mode - System Preference Fallback */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg-light: #0f172a;

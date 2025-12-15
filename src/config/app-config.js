@@ -1,7 +1,7 @@
-/**
- * Application Configuration & Entry Point
- * مدیریت راه‌اندازی و پیکربندی اصلی اپلیکیشن
- */
+import i18n from './i18n.js';
+import themeManager from './theme.js';
+import { initializeHeader } from '../ui/components/header.js';
+import { initializeFooter } from '../ui/components/footer.js';
 
 const APP_CONFIG = {
   name: 'BFO Educational Platform',
@@ -16,65 +16,28 @@ const LANGUAGES = {
   en: { name: 'English', dir: 'ltr', flag: '🇺🇸' },
 };
 
-/**
- * Initialize language and theme
- * راه‌اندازی زبان و تم
- */
 function initializeApp() {
-  // Set language
-  const html = document.documentElement;
-  html.lang = APP_CONFIG.language;
-  html.dir = LANGUAGES[APP_CONFIG.language].dir;
+  themeManager.initialize();
+  i18n.setLanguage(APP_CONFIG.language);
+  i18n.updatePageLanguage();
 
-  // Set theme
-  if (APP_CONFIG.theme === 'dark') {
-    document.body.classList.add('dark-mode');
-  }
+  const currentPage = getCurrentPage();
+  initializeHeader(currentPage);
+  initializeFooter();
 
-  // Initialize event listeners
-  initializeNavigation();
-  initializeLanguageToggle();
   initializeHeroAnimation();
   initializeCounters();
-}
+  initializeEducationPage();
+  initializeLaboratoryPage();
 
-/**
- * Initialize navigation
- * راه‌اندازی ناویگیشن
- */
-function initializeNavigation() {
-  const navbarToggle = document.getElementById('navbarToggle');
-  const navbarMenu = document.getElementById('navbarMenu');
-
-  if (navbarToggle) {
-    navbarToggle.addEventListener('click', () => {
-      navbarMenu.classList.toggle('active');
-    });
-
-    // Close menu when link is clicked
-    const navLinks = navbarMenu.querySelectorAll('.navbar__link');
-    navLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        navbarMenu.classList.remove('active');
-      });
-    });
+  if (APP_CONFIG.debug) {
+    console.log('App Configuration:', APP_CONFIG);
+    console.log('Current Language:', APP_CONFIG.language);
+    console.log('Current Theme:', themeManager.getTheme());
+    console.log('Current Page:', currentPage);
   }
-
-  // Set active nav item
-  const currentPage = getCurrentPage();
-  const navItems = document.querySelectorAll('[data-page]');
-  navItems.forEach((item) => {
-    item.classList.remove('active');
-    if (item.dataset.page === currentPage) {
-      item.classList.add('active');
-    }
-  });
 }
 
-/**
- * Get current page from URL
- * دریافت صفحه فعلی از URL
- */
 function getCurrentPage() {
   const path = window.location.pathname;
   if (path.includes('education')) return 'education';
@@ -83,41 +46,6 @@ function getCurrentPage() {
   return 'home';
 }
 
-/**
- * Initialize language toggle
- * راه‌اندازی تبدیل زبان
- */
-function initializeLanguageToggle() {
-  const langToggle = document.getElementById('langToggle');
-
-  if (langToggle) {
-    langToggle.addEventListener('click', () => {
-      APP_CONFIG.language = APP_CONFIG.language === 'fa' ? 'en' : 'fa';
-      localStorage.setItem('appLanguage', APP_CONFIG.language);
-
-      const html = document.documentElement;
-      html.lang = APP_CONFIG.language;
-      html.dir = LANGUAGES[APP_CONFIG.language].dir;
-
-      // Update button text
-      langToggle.textContent =
-        APP_CONFIG.language === 'fa' ? 'EN' : 'فا';
-
-      // Reload page or update content
-      location.reload();
-    });
-
-    // Set initial text
-    langToggle.innerHTML = `<i class="fas fa-globe"></i><span>${
-      APP_CONFIG.language === 'fa' ? 'EN' : 'فا'
-    }</span>`;
-  }
-}
-
-/**
- * Hero Animation
- * انیمیشن صفحه اول
- */
 function initializeHeroAnimation() {
   const canvas = document.getElementById('heroCanvas');
   if (!canvas) return;
@@ -125,7 +53,6 @@ function initializeHeroAnimation() {
   const ctx = canvas.getContext('2d');
   const heroSection = document.getElementById('hero');
 
-  // Set canvas size to match container
   function resizeCanvas() {
     canvas.width = heroSection.offsetWidth;
     canvas.height = heroSection.offsetHeight;
@@ -134,7 +61,6 @@ function initializeHeroAnimation() {
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
 
-  // Animate bacteria-like particles
   const particles = [];
   const particleCount = 50;
 
@@ -152,11 +78,9 @@ function initializeHeroAnimation() {
       this.x += this.vx;
       this.y += this.vy;
 
-      // Bounce off walls
       if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
       if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
-      // Wrap around
       this.x = (this.x + canvas.width) % canvas.width;
       this.y = (this.y + canvas.height) % canvas.height;
     }
@@ -169,12 +93,10 @@ function initializeHeroAnimation() {
     }
   }
 
-  // Initialize particles
   for (let i = 0; i < particleCount; i++) {
     particles.push(new Particle());
   }
 
-  // Animation loop
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -189,10 +111,6 @@ function initializeHeroAnimation() {
   animate();
 }
 
-/**
- * Counter animation for stats section
- * انیمیشن شمارنده برای بخش آمار
- */
 function initializeCounters() {
   const counters = document.querySelectorAll('[data-count]');
 
@@ -218,10 +136,6 @@ function initializeCounters() {
   });
 }
 
-/**
- * Animate counter from 0 to target value
- * انیمیشن شمارنده از 0 تا مقدار هدف
- */
 function animateCounter(element, target) {
   let current = 0;
   const increment = target / 50;
@@ -238,10 +152,6 @@ function animateCounter(element, target) {
   }, interval);
 }
 
-/**
- * Initialize Education Page
- * راه‌اندازی صفحه آموزش
- */
 function initializeEducationPage() {
   if (getCurrentPage() !== 'education') return;
 
@@ -256,56 +166,75 @@ function initializeEducationPage() {
   const lessonCounter = document.getElementById('lessonCounter');
 
   let currentLessonIndex = 0;
-  const lessons = [
-    'intro',
-    'bacteria',
-    'chemotaxis',
-    'algorithm',
-    'tsp',
-    'comparison',
-  ];
+  const lessons = ['intro', 'bacteria', 'chemotaxis', 'algorithm', 'tsp', 'comparison'];
 
-  // Load lesson content
+  const lessonTitles = {
+    fa: [
+      i18n.t('education.intro'),
+      i18n.t('education.bacteria'),
+      i18n.t('education.chemotaxis'),
+      i18n.t('education.algorithm'),
+      i18n.t('education.tsp'),
+      i18n.t('education.comparison'),
+    ],
+    en: [
+      i18n.t('education.intro'),
+      i18n.t('education.bacteria'),
+      i18n.t('education.chemotaxis'),
+      i18n.t('education.algorithm'),
+      i18n.t('education.tsp'),
+      i18n.t('education.comparison'),
+    ],
+  };
+
+  const lessonSubtitles = {
+    fa: [
+      i18n.t('education.introSubtitle'),
+      i18n.t('education.bacteriaSubtitle'),
+      i18n.t('education.chemotaxisSubtitle'),
+      i18n.t('education.algorithmSubtitle'),
+      i18n.t('education.tspSubtitle'),
+      i18n.t('education.comparisonSubtitle'),
+    ],
+    en: [
+      i18n.t('education.introSubtitle'),
+      i18n.t('education.bacteriaSubtitle'),
+      i18n.t('education.chemotaxisSubtitle'),
+      i18n.t('education.algorithmSubtitle'),
+      i18n.t('education.tspSubtitle'),
+      i18n.t('education.comparisonSubtitle'),
+    ],
+  };
+
   function loadLesson(index) {
     currentLessonIndex = index;
 
-    // Update UI
     const percent = ((index + 1) / lessons.length) * 100;
     progressFill.style.width = percent + '%';
     progressPercent.textContent = Math.round(percent) + '%';
     lessonCounter.textContent = `${index + 1} / ${lessons.length}`;
 
-    // Update active lesson button
     document.querySelectorAll('.lessons-nav__link').forEach((btn) => {
       btn.classList.remove('active');
     });
     document.querySelector(`[data-lesson="${lessons[index]}"]`).classList.add('active');
 
-    // Placeholder content
-    lessonTitle.textContent = ['درآمدی و تاریخچه', 'رفتار باکتری', 'شیمی‌جویی', 'مراحل الگوریتم', 'مسئله TSP', 'مقایسه الگوریتم‌ها'][index];
-    lessonSubtitle.textContent = [
-      'تاریخچه الگوریتم‌های الهام‌گرفته از طبیعت',
-      'فهم رفتار E. coli و حرکت باکتری‌ها',
-      'درس شیمی‌جویی و تغییر جهت',
-      'چهار مرحله اصلی الگوریتم BFO',
-      'مسئله فروشنده دوره‌گرد و کاربردها',
-      'مقایسه BFO با GA، PSO و سایر الگوریتم‌ها',
-    ][index];
+    const lang = i18n.getLanguage();
+    lessonTitle.textContent = lessonTitles[lang][index];
+    lessonSubtitle.textContent = lessonSubtitles[lang][index];
 
     lessonContent.innerHTML = `
       <div class="lesson-placeholder">
         <i class="fas fa-book"></i>
-        <p>درحال بارگذاری درس: ${lessonTitle.textContent}</p>
-        <p class="text-muted text-sm">محتوای تفصیلی بزودی اضافه خواهد شد</p>
+        <p>${i18n.t('education.loading')} ${lessonTitle.textContent}</p>
+        <p class="text-muted text-sm">${i18n.t('education.detailedContent')}</p>
       </div>
     `;
 
-    // Update button states
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === lessons.length - 1;
   }
 
-  // Event listeners
   if (lessonsList) {
     lessonsList.querySelectorAll('button').forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -331,18 +260,12 @@ function initializeEducationPage() {
     });
   }
 
-  // Load first lesson
   loadLesson(0);
 }
 
-/**
- * Initialize Laboratory Page
- * راه‌اندازی صفحه آزمایشگاه
- */
 function initializeLaboratoryPage() {
   if (getCurrentPage() !== 'laboratory') return;
 
-  // Initialize scenario selection
   const scenarioBtns = document.querySelectorAll('.scenario-btn');
   scenarioBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -351,7 +274,6 @@ function initializeLaboratoryPage() {
     });
   });
 
-  // Initialize parameter updates
   const paramInputs = document.querySelectorAll('.parameters-form .input-range');
   paramInputs.forEach((input) => {
     const display = document.getElementById(input.id + 'Display');
@@ -362,7 +284,6 @@ function initializeLaboratoryPage() {
     }
   });
 
-  // Initialize tab switching
   const tabBtns = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
 
@@ -370,56 +291,36 @@ function initializeLaboratoryPage() {
     btn.addEventListener('click', () => {
       const tabName = btn.dataset.tab;
 
-      // Remove active class from all
       tabBtns.forEach((b) => b.classList.remove('active'));
       tabContents.forEach((content) => content.classList.remove('active'));
 
-      // Add active class to clicked
       btn.classList.add('active');
       document.getElementById(tabName + 'Tab')?.classList.add('active');
     });
   });
 
-  // Initialize placeholder canvas
   const canvas = document.getElementById('warehouseCanvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Draw placeholder
     ctx.fillStyle = '#f8fafc';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#cbd5e1';
     ctx.font = '16px Arial';
     ctx.textAlign = 'center';
+    ctx.fillText(i18n.t('laboratory.warehouseCanvas'), canvas.width / 2, canvas.height / 2 - 10);
     ctx.fillText(
-      'Canvas برای شبیه‌سازی انبار',
-      canvas.width / 2,
-      canvas.height / 2 - 10
-    );
-    ctx.fillText(
-      'محتوای تفصیلی بزودی اضافه خواهد شد',
+      i18n.t('education.detailedContent'),
       canvas.width / 2,
       canvas.height / 2 + 20
     );
   }
 }
 
-/**
- * Main Initialization
- * راه‌اندازی اصلی
- */
 document.addEventListener('DOMContentLoaded', () => {
   initializeApp();
-  initializeEducationPage();
-  initializeLaboratoryPage();
-
-  if (APP_CONFIG.debug) {
-    console.log('App Configuration:', APP_CONFIG);
-    console.log('Current Language:', APP_CONFIG.language);
-    console.log('Current Page:', getCurrentPage());
-  }
 });
 
 export { APP_CONFIG, LANGUAGES };

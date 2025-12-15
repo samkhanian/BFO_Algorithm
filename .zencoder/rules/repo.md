@@ -3,132 +3,102 @@ description: Repository Information Overview
 alwaysApply: true
 ---
 
-# BFO Educational Platform - Project Specification
+# BFO Educational Platform Information
 
 ## Summary
 
-This is a university coursework assignment for the Artificial Intelligence course at an Iranian university (instructor: Dr. Roya Namiranian, student: Jamal Samkhanian). The project specifies a comprehensive interactive educational platform for learning the **Bacterial Foraging Optimization (BFO)** algorithm with practical application in warehouse robot path optimization. The repository currently contains project documentation and specifications in Farsi and English, with implementation planned as a web-based platform.
+Interactive educational platform for the Bacterial Foraging Optimization (BFO) algorithm, an AI course project at an Iranian university. The platform is bilingual (Farsi/English) and responsive, featuring two main sections: Education (algorithm learning with 6 interactive lessons) and Laboratory (simulation and optimization with warehouse scenarios).
 
 ## Structure
 
-- **README.md** / **README_FA.md**: Comprehensive documentation of BFO algorithm, core concepts, real-world applications, and industry impact (in English and Farsi)
-- **prompt**: Detailed project specification for building the educational platform
-- **LICENSE**: MIT License
-- **.git**: Version control metadata
+- **Root HTML Pages**: `index.html` (home), `education.html` (lessons), `laboratory.html` (simulation), `about.html` (project info)
+- **src/config/**: `app-config.js` - main initialization, language toggle, navigation, hero animation, education/lab page logic
+- **src/ui/styles/**: 9 CSS files covering variables, base styles, components, responsive design, animations, and page-specific styling
+- **src/ui/components/**, `src/ui/managers/`, `src/models/`, `src/services/`, `src/core/`: Pre-structured for Phase 2 implementation
+- **assets/**, **content/**, **docs/**, **tests/**: Supporting directories for resources, educational content, documentation, and unit tests
 
-## Project Type
+## Language & Runtime
 
-**Educational Web Platform** (Not Yet Implemented)
+**Language**: HTML5, CSS3, JavaScript (ES6 Modules)  
+**Runtime**: Browser-based (modern browsers with ES6+ support)  
+**Build System**: Vite 5.0.8  
+**Package Manager**: npm
 
-The platform is currently in specification phase. Implementation will be a two-section interactive web application:
-1. **Education Section**: Concepts and algorithm visualization
-2. **Laboratory Section**: Practical simulation and optimization tool
+## Dependencies
 
-## Planned Technology Stack
+**Main Dependencies**:
+- d3 (^7.8.5) - Data visualization library
+- @fortawesome/fontawesome-free (^6.5.1) - Icon library
 
-### Frontend
-- **HTML5, CSS3**: Markup and styling with RTL (Right-to-Left) support for Farsi
-- **JavaScript (ES6+)**: Core application logic
-- **Canvas API**: Animation rendering for bacteria behavior and warehouse visualization
-- **D3.js (v7)**: Data visualization and state tree graphs
-- **FontAwesome (v6)**: Icon library
+**Development Dependencies**:
+- vite (^5.0.8) - Build tool and dev server
+- eslint (^8.55.0) - Code quality
+- prettier (^3.1.0) - Code formatting
+- jest (^29.7.0) - Testing framework
+- @vitejs/plugin-basic-ssl (^1.0.0) - HTTPS support for dev server
 
-### Styling & Layout
-- **Flexbox/Grid**: Responsive layout system
-- **CSS Variables**: Theme color management
-- **CSS Animations**: Transitions and motion effects
-- **Media Queries**: Mobile, tablet, desktop responsiveness
+## Build & Installation
 
-### Fonts & Internationalization
-- **Vazirmatn**: Primary Farsi font
-- **Tanha**: Display/heading font
-- **Right-to-Left (RTL)**: Full RTL support throughout
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+npm run lint
+npm run format
+npm run test
+```
 
-### Build & Development Tools
-- **Not yet specified** in the documentation
+## Main Files & Resources
 
-## Key Requirements
+**Application Entry Points**:
+- `index.html` - Home page with hero, features, stats, and CTA sections
+- `education.html` - Interactive lesson viewer (6 lessons on BFO algorithm)
+- `laboratory.html` - Simulation interface with warehouse canvas and parameter controls
+- `about.html` - Project information, team, resources, and acknowledgments
 
-### Education Section Features
-- **Bacteria Behavior Animation**: Interactive visualization of E. coli movement
-- **Chemotaxis Simulation**: Visual representation of tumble/run movements
-- **Nutrient Gradient Visualization**: Color-based gradient representation
-- **Algorithm Steps**: Interactive walkthrough of chemotaxis, swarming, reproduction, and elimination/dispersal
-- **Live Code Display**: Algorithm code synchronized with animation
-- **AI Concepts Explainer**: Interactive tutorials on optimization, state space search, TSP problem, heuristic algorithms
+**Configuration Files**:
+- `src/config/app-config.js` - App initialization, language toggle (fa/en), theme management (light/dark), hero particle animation, page-specific initializers
+- `vite.config.js` - Vite configuration with dev server port 3000
+- `package.json` - Project metadata and npm scripts
+- `.eslintrc.json` - ESLint rules (camelCase, prefer-const, semicolons)
+- `.prettierrc.json` - Prettier formatting (2-space indent, single quotes)
 
-### Laboratory Section Features
-- **2D Warehouse Simulator**: Interactive warehouse map with adjustable shelf positions
-- **Robot Path Optimization**: Real-time BFO algorithm application to TSP
-- **State Tree Visualization**: D3.js-based graph showing algorithm decision tree
-- **AI Metrics Analysis**: Completeness, optimality, time complexity, space complexity, branching factor, convergence rate
-- **Multi-Scenario Support**: Beginner (5 points), intermediate (10 points), advanced (20 points), and custom scenarios
-- **Data Export**: JSON, CSV, PNG output formats
-- **Scenario Saving**: User ability to save and load warehouse configurations
+**CSS Architecture**:
+- `src/ui/styles/variables.css` - 70+ CSS custom properties (colors, typography, spacing, shadows, transitions, z-index)
+- `src/ui/styles/base.css` - HTML element resets and semantic styling
+- `src/ui/styles/components.css` - Reusable button, card, input, badge, alert, pagination components
+- `src/ui/styles/responsive.css` - Mobile-first design (breakpoints: 640px, 768px, 1024px, 1280px, 1536px)
+- `src/ui/styles/animations.css` - 20+ animations (fade, slide, scale, pulse, bounce, spin, shimmer, etc.)
+- Page-specific: `index.css`, `education.css`, `laboratory.css`, `about.css`
 
-## Warehouse Problem Parameters
+## Testing
 
-**Scenario Levels:**
-- Beginner: 5 points, 50×50m warehouse
-- Intermediate: 10 points, 80×80m warehouse
-- Advanced: 20 points, 100×100m warehouse
-- Custom: Adjustable points and dimensions
+**Framework**: Jest (^29.7.0)  
+**Configuration File**: `jest.config.js`  
+**Coverage Thresholds**: 70% required for statements, branches, functions, lines  
 
-**Example (Amazon Warehouse Robot):** 
-Robot collects 6 packages from a 100×100m warehouse, visiting points S→A→D→B→C→E→F with distance/time/priority optimization.
+**Run Tests**:
+```bash
+npm test
+npm run test:watch
+npm run test:coverage
+```
 
-**Fitness Function:** `0.5×(1/distance) + 0.3×(1/time) + 0.2×priorityScore`
+## Current Features
 
-## Browser Support
+- Bilingual UI (Farsi/English) with RTL/LTR support
+- Responsive design (mobile-first, 5 breakpoints)
+- Hero section with E. coli bacteria particle animation
+- Statistics counter with intersection observer
+- Education page with sidebar lesson navigation and progress tracking
+- Laboratory page with scenario selection and tab interface (Comparison, State Tree, Metrics, Export)
+- Modern animation library
+- Dark/light theme support in CSS (via CSS variables and prefers-color-scheme)
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+## Known Outstanding Items
 
-## AI Metrics Included
-
-- **Completeness**: Does the algorithm always find a solution?
-- **Optimality**: Is the solution found optimal? (percentage-based measurement)
-- **Time Complexity**: Algorithm runtime analysis (worst case: O(n²))
-- **Space Complexity**: Memory consumption analysis (O(n) for n bacteria)
-- **Branching Factor**: Average options per state node
-- **Convergence Rate**: Algorithm convergence speed analysis
-
-## Design Specifications
-
-### Color Scheme
-- **Primary**: Blue (#2563eb, #3b82f6)
-- **Accent Bacteria**: Green (#10b981)
-- **Accent Robot**: Orange (#f59e0b)
-- **Background**: Dark (#1e293b), Light (#f8fafc)
-- **Text**: Dark gray (#334155), Light gray (#64748b), White
-
-### Responsive Breakpoints
-- **Mobile**: Single column layout
-- **Tablet**: Two-column layout
-- **Desktop**: Full layout with all sections visible
-
-## Implementation Phases
-
-1. **Initial Setup**: Folder structure, base HTML files, Farsi fonts setup
-2. **Education Section**: Canvas animations, interactive controls, educational content
-3. **Laboratory Section**: Warehouse map, BFO algorithm implementation, D3.js integration
-4. **Integration**: Section linking, interaction testing, performance optimization
-5. **Testing & Launch**: Responsive testing, cross-browser testing, speed optimization, documentation
-
-## Important Notes
-
-- Full **RTL (Right-to-Left)** support required throughout all sections
-- **Modular, clean code** with Farsi comments for logic explanation
-- Performance and memory optimization critical for smooth animation rendering
-- Focus on engaging visual learning experience
-- AI concepts should be understandable for beginners and advanced users
-- Export/save functionality for educational value and reproducibility
-
-## Current Status
-
-**Phase**: Specification and Documentation Complete  
-**Implementation Status**: Not Started  
-**Primary Language**: Specification written in Farsi and English  
-**License**: MIT (Copyright 2025 Jamal Samkhanian)
+- **Header/Footer Extraction**: Currently duplicated across pages; needs extraction to reusable components
+- **Dark Theme Toggle**: Theme variable setup exists but no UI button/switcher implemented
+- **Full i18n System**: Only documentation is bilingual; UI needs comprehensive translation system
+- **Component Registry**: No centralized management for reusable components
