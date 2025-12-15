@@ -5,7 +5,7 @@
 **Instructor:** Dr. Roya Namiranian  
 
 📄 Persian version of this document:  
-➡️ [نسخه فارسی – BFO](sandbox:README.md)
+➡️ [نسخه فارسی – BFO](README_FA.md)
 
 ---
 
