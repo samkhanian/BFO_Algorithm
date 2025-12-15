@@ -18,12 +18,15 @@ const LANGUAGES = {
 
 function initializeApp() {
   themeManager.initialize();
+  
   i18n.setLanguage(APP_CONFIG.language);
   i18n.updatePageLanguage();
 
   const currentPage = getCurrentPage();
   initializeHeader(currentPage);
   initializeFooter();
+
+  i18n.updateAllTranslations();
 
   initializeHeroAnimation();
   initializeCounters();

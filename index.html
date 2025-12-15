@@ -37,6 +37,17 @@
 
     <!-- Preload Critical Resources -->
     <link rel="preload" href="src/config/app-config.js" as="script" />
+
+    <!-- Early Theme Application (Prevents Flash) -->
+    <script>
+      const savedTheme = localStorage.getItem('appTheme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      if (theme === 'dark') {
+        document.documentElement.style.colorScheme = 'dark';
+        document.body.classList.add('dark-mode');
+      }
+    </script>
   </head>
   <body>
 

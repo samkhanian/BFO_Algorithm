@@ -1,4 +1,4 @@
-import translations from '../../locales/translations.js';
+import themeManager from '../../config/theme.js';
 
 const headerHTML = `
 <nav class="navbar">
@@ -74,21 +74,13 @@ export function initializeHeader(currentPage = 'home') {
   };
 
   const updateThemeLabel = () => {
-    const theme = localStorage.getItem('appTheme') || 'light';
-    const isDark = document.body.classList.contains('dark-mode');
+    const isDark = themeManager.getTheme() === 'dark';
     themeLabel.textContent = isDark ? '☀️' : '🌙';
     themeLabel.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
   };
 
   themeToggle.addEventListener('click', () => {
-    const isDark = document.body.classList.contains('dark-mode');
-    if (isDark) {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('appTheme', 'light');
-    } else {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('appTheme', 'dark');
-    }
+    themeManager.toggleTheme();
     updateThemeLabel();
   });
 
