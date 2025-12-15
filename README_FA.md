@@ -6,7 +6,7 @@
 **استاد:** دکتر رویا نمیرانیان  
 
 📄 نسخه انگلیسی این سند:  
-➡️ [English Version – BFO](sandbox:/mnt/data/BFO_EN_FULL.md)
+➡️ [English Version – BFO](README.md)
 
 ---
 
