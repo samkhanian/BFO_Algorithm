@@ -1,93 +1,102 @@
-# Bacterial Foraging Optimization (BFO)
-> View the Persian version of this research [here](README_FA.md)
+# 🔬 Bacterial Foraging Optimization (BFO)
+
 **Student:** Jamal Samkhanian  
 **Course:** Artificial Intelligence  
-**Professor:** Dr. Roya Namirany  
+**Instructor:** Dr. Roya Namiranian  
+
+📄 Persian version of this document:  
+➡️ [نسخه فارسی – BFO](sandbox:/mnt/data/BFO_FA_FULL.md)
 
 ---
 
-## Introduction
-Bacterial Foraging Optimization (BFO) is a **nature-inspired optimization algorithm** introduced by Passino in 2002.  
+## 🎯 Introduction – Biological Metaphor in AI
+**Bacterial Foraging Optimization (BFO)** is a **metaheuristic optimization algorithm** introduced by  
+**Kevin M. Passino (2002)** and inspired by the food-searching behavior of *E. coli* bacteria.
 
-- **Core idea:** Bacteria move intelligently in their environment to find food sources.  
-- BFO simulates this behavior to solve **continuous numerical optimization problems**.  
-- It is a **population-based** algorithm, meaning multiple bacteria (solutions) explore the search space simultaneously.
+📌 **Biomimicry:**  
+https://en.wikipedia.org/wiki/Biomimicry
 
----
+📌 **Optimization:**  
+https://en.wikipedia.org/wiki/Mathematical_optimization
 
-## Algorithm Steps
-
-### 1. Chemotaxis
-- Bacteria move to find food sources.  
-- Two types of movement:  
-  - **Tumble:** random direction change  
-  - **Run:** move in a beneficial direction
-
-### 2. Swarming
-- Bacteria attract each other and move collectively toward regions of higher quality.
-
-### 3. Reproduction
-- Bacteria are ranked based on success.  
-- Successful bacteria reproduce, weak ones are eliminated.
-
-### 4. Elimination and Dispersal
-- Some bacteria are randomly eliminated or moved to new locations.  
-- Prevents the population from getting stuck in local minima.
+📌 **Metaheuristic:**  
+https://en.wikipedia.org/wiki/Metaheuristic
 
 ---
 
-## Features and Advantages
-- **Population-based:** Multiple bacteria explore simultaneously → better coverage of the search space.  
-- **Suitable for nonlinear and multidimensional problems.**  
-- Resistant to local minima/maxima due to **Elimination/Dispersal**.  
-- Applications: engineering optimization, control, scheduling, neural networks, combinatorial problems.
+## 🌱 Core Idea
+Bacterial behavior includes:
+- Random motion (Tumble)
+- Directed motion (Run)
+- Reproduction
+- Elimination and dispersal
 
-**Limitations:**  
-- Many parameters need careful tuning.  
-- Convergence speed may be slow in some problems.
-
----
-
-## Numerical Example: Finding the Minimum of a Function
-
-**Objective function:**  
-\[
-f(x) = (x-3)^2
-\]
-
-- Domain: \(x \in [0, 6]\) (integer values)  
-- Goal: Find the minimum value of f(x)
-
-### BFO Execution Steps
-
-1. **Initial positions of bacteria:**
-
-| Bacteria | x Initial |
-|----------|-----------|
-| B1       | 0         |
-| B2       | 1         |
-| B3       | 2         |
-| B4       | 4         |
-| B5       | 5         |
-
-2. **Chemotaxis**  
-- Bacteria move to reduce function value.  
-- Example B1: 0 → 1 → 2 → 3 → minimum found
-
-3. **Reproduction**  
-- Successful bacteria reproduce; weak ones are removed.
-
-4. **Elimination/Dispersal**  
-- Bacteria are randomly scattered to avoid getting trapped in local minima.
-
-### Result
-- All bacteria converge to **x = 3**  
-- Minimum value:  
-\[
-f(3) = 0
-\]
+📌 **Chemotaxis:**  
+https://en.wikipedia.org/wiki/Chemotaxis
 
 ---
 
-**Summary:**  
-BFO is a **population-based, multidimensional algorithm suitable for nonlinear problems**, using natural bacterial behavior to explore the search space and converge to the global optimum.
+## 🔄 Algorithm Phases
+
+### 1️⃣ Chemotaxis
+Local search based on fitness improvement.
+
+```javascript
+if (newFitness > currentFitness) {
+    run();
+} else {
+    tumble();
+}
+```
+
+### 2️⃣ Swarming
+Collective movement toward optimal regions.
+
+📌 **Swarm Intelligence:**  
+https://en.wikipedia.org/wiki/Swarm_intelligence
+
+### 3️⃣ Reproduction
+Best bacteria survive and reproduce.
+
+### 4️⃣ Elimination & Dispersal
+Avoidance of local optima.
+
+📌 **Local Optimum:**  
+https://en.wikipedia.org/wiki/Local_optimum
+
+---
+
+## 🏭 Industrial Applications
+- Warehouse robot routing
+- Power system scheduling
+- Structural optimization
+- Neural network training
+
+📌 **Artificial Neural Network:**  
+https://en.wikipedia.org/wiki/Artificial_neural_network
+
+---
+
+## ⚙️ Advantages & Challenges
+
+### Advantages
+- Robust against local optima
+- Multi-objective capability
+- Scalable
+
+### Challenges
+- Many parameters
+- Computational cost
+
+---
+
+## 🎓 Conclusion
+BFO demonstrates how simple biological behaviors can solve complex engineering problems.
+
+---
+
+## 📚 References
+- Passino, K. M. (2002)
+- IEEE Transactions
+- GeeksForGeeks  
+https://www.geeksforgeeks.org/bacterial-foraging-optimization-algorithm/
