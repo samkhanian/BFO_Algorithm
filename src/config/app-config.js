@@ -1,5 +1,4 @@
 import i18n from './i18n.js';
-import themeManager from './theme.js';
 import { initializeHeader } from '../ui/components/header.js';
 import { initializeFooter } from '../ui/components/footer.js';
 
@@ -17,8 +16,6 @@ const LANGUAGES = {
 };
 
 function initializeApp() {
-  themeManager.initialize();
-  
   i18n.setLanguage(APP_CONFIG.language);
   i18n.updatePageLanguage();
 
@@ -26,7 +23,9 @@ function initializeApp() {
   initializeHeader(currentPage);
   initializeFooter();
 
-  i18n.updateAllTranslations();
+  setTimeout(() => {
+    i18n.updateAllTranslations();
+  }, 100);
 
   initializeHeroAnimation();
   initializeCounters();
@@ -36,7 +35,7 @@ function initializeApp() {
   if (APP_CONFIG.debug) {
     console.log('App Configuration:', APP_CONFIG);
     console.log('Current Language:', APP_CONFIG.language);
-    console.log('Current Theme:', themeManager.getTheme());
+    console.log('Current Theme:', localStorage.getItem('appTheme'));
     console.log('Current Page:', currentPage);
   }
 }

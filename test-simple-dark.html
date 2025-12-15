@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تست ساده تم تاریک</title>
+    <link rel="stylesheet" href="src/ui/styles/variables.css" />
+    <link rel="stylesheet" href="src/ui/styles/base.css" />
+    <style>
+      body {
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      .theme-box {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin: 40px 0;
+        flex-wrap: wrap;
+      }
+
+      .color-sample {
+        width: 100px;
+        height: 100px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .sample-bg {
+        background-color: var(--color-bg-light);
+        color: var(--color-text-primary);
+        border: 2px solid var(--color-border);
+      }
+
+      .sample-text {
+        background-color: var(--color-bg-elevation-1);
+        color: var(--color-text-primary);
+        border: 2px solid var(--color-border);
+      }
+
+      .sample-primary {
+        background-color: var(--color-primary);
+        color: white;
+      }
+
+      .btn-test {
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: var(--color-primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-test:hover {
+        background-color: var(--color-primary-dark);
+      }
+
+      p {
+        font-size: 18px;
+        margin: 20px 0;
+      }
+
+      .info {
+        padding: 20px;
+        background-color: var(--color-bg-elevation-1);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        margin-top: 30px;
+      }
+    </style>
+
+    <!-- Early Theme Application -->
+    <script>
+      const savedTheme = localStorage.getItem('appTheme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      console.log('Initial theme:', theme);
+      if (theme === 'dark') {
+        document.documentElement.style.colorScheme = 'dark';
+        document.body.classList.add('dark-mode');
+        console.log('Applied dark-mode class to body');
+      }
+    </script>
+  </head>
+  <body>
+    <h1>تست ساده تم تاریک</h1>
+    <p id="status">وضعیت تم: روشن</p>
+
+    <div class="theme-box">
+      <div class="color-sample sample-bg">پس‌زمینه</div>
+      <div class="color-sample sample-text">متن</div>
+      <div class="color-sample sample-primary">اصلی</div>
+    </div>
+
+    <button class="btn-test" id="toggleBtn">تغییر تم</button>
+
+    <div class="info">
+      <p>برای تست:</p>
+      <ol style="text-align: right; margin: 10px 0;">
+        <li>دکمه "تغییر تم" را کلیک کنید</li>
+        <li>رنگ‌های پس‌زمینه و متن باید تغییر کنند</li>
+        <li>صفحه را refresh کنید - تم باید ذخیره بمانند</li>
+      </ol>
+    </div>
+
+    <script>
+      const toggleBtn = document.getElementById('toggleBtn');
+      const status = document.getElementById('status');
+
+      function updateStatus() {
+        const isDark = document.body.classList.contains('dark-mode');
+        status.textContent = isDark ? 'وضعیت تم: تاریک 🌙' : 'وضعیت تم: روشن ☀️';
+        console.log('Status updated. Dark mode:', isDark);
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        console.log('Toggle button clicked');
+        const isDark = document.body.classList.contains('dark-mode');
+        console.log('Current state:', isDark ? 'dark' : 'light');
+
+        if (isDark) {
+          document.body.classList.remove('dark-mode');
+          localStorage.setItem('appTheme', 'light');
+          console.log('✓ Removed dark-mode, set localStorage to light');
+        } else {
+          document.body.classList.add('dark-mode');
+          localStorage.setItem('appTheme', 'dark');
+          console.log('✓ Added dark-mode, set localStorage to dark');
+        }
+
+        updateStatus();
+      });
+
+      updateStatus();
+      console.log('=== Test page loaded ===');
+      console.log('body classes:', document.body.className);
+      console.log('localStorage appTheme:', localStorage.getItem('appTheme'));
+    </script>
+  </body>
+</html>

@@ -1,5 +1,3 @@
-import themeManager from '../../config/theme.js';
-
 const headerHTML = `
 <nav class="navbar">
   <div class="navbar__container container flex-between">
@@ -62,55 +60,68 @@ export function initializeHeader(currentPage = 'home') {
   headerElement.innerHTML = headerHTML;
   document.body.insertBefore(headerElement.firstElementChild, document.body.firstChild);
 
-  const navbarToggle = document.getElementById('navbarToggle');
-  const navbarMenu = document.getElementById('navbarMenu');
-  const themeToggle = document.getElementById('themeToggle');
-  const langToggle = document.getElementById('langToggle');
-  const themeLabel = document.getElementById('themeLabel');
+  setTimeout(() => {
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    const themeToggle = document.getElementById('themeToggle');
+    const langToggle = document.getElementById('langToggle');
+    const themeLabel = document.getElementById('themeLabel');
 
-  const LANGUAGES = {
-    fa: { name: 'فارسی', dir: 'rtl' },
-    en: { name: 'English', dir: 'ltr' },
-  };
-
-  const updateThemeLabel = () => {
-    const isDark = themeManager.getTheme() === 'dark';
-    themeLabel.textContent = isDark ? '☀️' : '🌙';
-    themeLabel.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-  };
-
-  themeToggle.addEventListener('click', () => {
-    themeManager.toggleTheme();
-    updateThemeLabel();
-  });
-
-  langToggle.addEventListener('click', () => {
-    const currentLang = localStorage.getItem('appLanguage') || 'fa';
-    const newLang = currentLang === 'fa' ? 'en' : 'fa';
-    localStorage.setItem('appLanguage', newLang);
-    location.reload();
-  });
-
-  navbarToggle.addEventListener('click', () => {
-    navbarMenu.classList.toggle('active');
-  });
-
-  const navLinks = navbarMenu.querySelectorAll('.navbar__link');
-  navLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      navbarMenu.classList.remove('active');
-    });
-  });
-
-  const navItems = document.querySelectorAll('[data-page]');
-  navItems.forEach((item) => {
-    item.classList.remove('active');
-    if (item.dataset.page === currentPage) {
-      item.classList.add('active');
+    if (!themeToggle) {
+      console.error('Theme toggle button not found!');
+      return;
     }
-  });
 
-  updateThemeLabel();
+    const updateThemeLabel = () => {
+      if (!themeLabel) return;
+      const isDark = document.body.classList.contains('dark-mode');
+      themeLabel.textContent = isDark ? '☀️' : '🌙';
+    };
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.body.classList.contains('dark-mode');
+      if (isDark) {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('appTheme', 'light');
+      } else {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('appTheme', 'dark');
+      }
+      updateThemeLabel();
+    });
+
+    if (langToggle) {
+      langToggle.addEventListener('click', () => {
+        const currentLang = localStorage.getItem('appLanguage') || 'fa';
+        const newLang = currentLang === 'fa' ? 'en' : 'fa';
+        localStorage.setItem('appLanguage', newLang);
+        location.reload();
+      });
+    }
+
+    if (navbarToggle && navbarMenu) {
+      navbarToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('active');
+      });
+
+      const navLinks = navbarMenu.querySelectorAll('.navbar__link');
+      navLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          navbarMenu.classList.remove('active');
+        });
+      });
+    }
+
+    const navItems = document.querySelectorAll('[data-page]');
+    navItems.forEach((item) => {
+      item.classList.remove('active');
+      if (item.dataset.page === currentPage) {
+        item.classList.add('active');
+      }
+    });
+
+    updateThemeLabel();
+  }, 50);
 }
 
 export { headerHTML };
