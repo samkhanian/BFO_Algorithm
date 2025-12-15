@@ -1,6 +1,8 @@
 import i18n from './i18n.js';
 import { initializeHeader } from '../ui/components/header.js';
 import { initializeFooter } from '../ui/components/footer.js';
+import { loadLessonContent } from '../ui/managers/education.manager.js';
+import { initializeLaboratorySimulation } from '../ui/managers/laboratory.manager.js';
 
 const APP_CONFIG = {
   name: 'BFO Educational Platform',
@@ -170,44 +172,6 @@ function initializeEducationPage() {
   let currentLessonIndex = 0;
   const lessons = ['intro', 'bacteria', 'chemotaxis', 'algorithm', 'tsp', 'comparison'];
 
-  const lessonTitles = {
-    fa: [
-      i18n.t('education.intro'),
-      i18n.t('education.bacteria'),
-      i18n.t('education.chemotaxis'),
-      i18n.t('education.algorithm'),
-      i18n.t('education.tsp'),
-      i18n.t('education.comparison'),
-    ],
-    en: [
-      i18n.t('education.intro'),
-      i18n.t('education.bacteria'),
-      i18n.t('education.chemotaxis'),
-      i18n.t('education.algorithm'),
-      i18n.t('education.tsp'),
-      i18n.t('education.comparison'),
-    ],
-  };
-
-  const lessonSubtitles = {
-    fa: [
-      i18n.t('education.introSubtitle'),
-      i18n.t('education.bacteriaSubtitle'),
-      i18n.t('education.chemotaxisSubtitle'),
-      i18n.t('education.algorithmSubtitle'),
-      i18n.t('education.tspSubtitle'),
-      i18n.t('education.comparisonSubtitle'),
-    ],
-    en: [
-      i18n.t('education.introSubtitle'),
-      i18n.t('education.bacteriaSubtitle'),
-      i18n.t('education.chemotaxisSubtitle'),
-      i18n.t('education.algorithmSubtitle'),
-      i18n.t('education.tspSubtitle'),
-      i18n.t('education.comparisonSubtitle'),
-    ],
-  };
-
   function loadLesson(index) {
     currentLessonIndex = index;
 
@@ -221,17 +185,10 @@ function initializeEducationPage() {
     });
     document.querySelector(`[data-lesson="${lessons[index]}"]`).classList.add('active');
 
-    const lang = i18n.getLanguage();
-    lessonTitle.textContent = lessonTitles[lang][index];
-    lessonSubtitle.textContent = lessonSubtitles[lang][index];
-
-    lessonContent.innerHTML = `
-      <div class="lesson-placeholder">
-        <i class="fas fa-book"></i>
-        <p>${i18n.t('education.loading')} ${lessonTitle.textContent}</p>
-        <p class="text-muted text-sm">${i18n.t('education.detailedContent')}</p>
-      </div>
-    `;
+    const lessonData = loadLessonContent(lessons[index]);
+    lessonTitle.textContent = lessonData.title;
+    lessonSubtitle.textContent = lessonData.subtitle;
+    lessonContent.innerHTML = lessonData.content;
 
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === lessons.length - 1;
@@ -268,6 +225,9 @@ function initializeEducationPage() {
 function initializeLaboratoryPage() {
   if (getCurrentPage() !== 'laboratory') return;
 
+  let labSimulation = null;
+  let simulationInterval = null;
+
   const scenarioBtns = document.querySelectorAll('.scenario-btn');
   scenarioBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -303,21 +263,76 @@ function initializeLaboratoryPage() {
 
   const canvas = document.getElementById('warehouseCanvas');
   if (canvas) {
-    const ctx = canvas.getContext('2d');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    ctx.fillStyle = '#f8fafc';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#cbd5e1';
-    ctx.font = '16px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(i18n.t('laboratory.warehouseCanvas'), canvas.width / 2, canvas.height / 2 - 10);
-    ctx.fillText(
-      i18n.t('education.detailedContent'),
-      canvas.width / 2,
-      canvas.height / 2 + 20
-    );
+    const startSimBtn = document.getElementById('startSimBtn');
+    const pauseSimBtn = document.getElementById('pauseSimBtn');
+    const resetSimBtn = document.getElementById('resetSimBtn');
+
+    const getSimulationParams = () => ({
+      bacteriaCount: parseInt(document.getElementById('bacteriaCount').value),
+      chemoSteps: parseInt(document.getElementById('chemoSteps').value),
+      reproFreq: parseInt(document.getElementById('reproFreq').value),
+      edProb: parseFloat(document.getElementById('edProb').value)
+    });
+
+    labSimulation = initializeLaboratorySimulation(canvas, getSimulationParams());
+    labSimulation.simulation.draw();
+
+    if (startSimBtn) {
+      startSimBtn.addEventListener('click', () => {
+        if (!labSimulation.simulation.running) {
+          labSimulation.simulation.running = true;
+          startSimBtn.disabled = true;
+          pauseSimBtn.disabled = false;
+
+          simulationInterval = setInterval(() => {
+            if (labSimulation.simulation.running) {
+              labSimulation.simulation.step();
+              labSimulation.simulation.draw();
+              updateStatistics();
+            }
+          }, 50);
+        }
+      });
+    }
+
+    if (pauseSimBtn) {
+      pauseSimBtn.disabled = true;
+      pauseSimBtn.addEventListener('click', () => {
+        labSimulation.simulation.running = false;
+        startSimBtn.disabled = false;
+        pauseSimBtn.disabled = true;
+        if (simulationInterval) {
+          clearInterval(simulationInterval);
+        }
+      });
+    }
+
+    if (resetSimBtn) {
+      resetSimBtn.addEventListener('click', () => {
+        if (simulationInterval) {
+          clearInterval(simulationInterval);
+        }
+        labSimulation.resetSimulation();
+        startSimBtn.disabled = false;
+        pauseSimBtn.disabled = true;
+        labSimulation.simulation.draw();
+        updateStatistics();
+      });
+    }
+
+    const updateStatistics = () => {
+      const stats = labSimulation.getStatistics();
+      const stepCount = document.getElementById('stepCount');
+      const bestFitness = document.getElementById('bestFitness');
+      const improvementPercent = document.getElementById('improvementPercent');
+
+      if (stepCount) stepCount.textContent = stats.iterations;
+      if (bestFitness) bestFitness.textContent = stats.bestFitness;
+      if (improvementPercent) improvementPercent.textContent = stats.improvement + '%';
+    };
   }
 }
 
