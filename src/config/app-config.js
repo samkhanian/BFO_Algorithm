@@ -1,8 +1,10 @@
 import i18n from './i18n.js';
 import { initializeHeader } from '../ui/components/header.js';
 import { initializeFooter } from '../ui/components/footer.js';
-import { loadLessonContent } from '../ui/managers/education.manager.js';
+import educationManagerExport, { loadLessonContent } from '../ui/managers/education.manager.js';
 import { initializeLaboratorySimulation } from '../ui/managers/laboratory.manager.js';
+
+const educationManager = educationManagerExport.educationManager;
 
 const APP_CONFIG = {
   name: 'BFO Educational Platform',
@@ -192,6 +194,8 @@ function initializeEducationPage() {
 
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === lessons.length - 1;
+
+    educationManager.initializeVisualizers(lessons[index]);
   }
 
   if (lessonsList) {

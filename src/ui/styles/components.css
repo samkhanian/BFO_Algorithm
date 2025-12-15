@@ -150,7 +150,8 @@
   color: var(--color-primary);
 }
 
-.btn--small {
+.btn--small,
+.btn--sm {
   padding: var(--spacing-1) var(--spacing-3);
   font-size: var(--text-sm);
 }

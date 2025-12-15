@@ -1,4 +1,6 @@
 import i18n from '../../config/i18n.js';
+import BacterialVisualizer from './bacterial-visualizer.js';
+import BehaviorVisualizer from './behavior-visualizer.js';
 
 const lessonContents = {
   fa: {
@@ -62,6 +64,19 @@ const lessonContents = {
             <li><strong>Run (حرکت مستقیم):</strong> حرکت تصادفی در جهت ثابت</li>
             <li><strong>Tumble (چرخش):</strong> تغییر تصادفی جهت حرکت</li>
           </ul>
+          
+          <div class="lesson-canvas-container" id="bacteriaMotionCanvas"></div>
+          <div class="canvas-controls">
+            <button class="btn btn--sm btn--primary" id="startMotionBtn">
+              <i class="fas fa-play"></i> شروع
+            </button>
+            <button class="btn btn--sm btn--outline" id="stopMotionBtn" disabled>
+              <i class="fas fa-pause"></i> توقف
+            </button>
+            <button class="btn btn--sm btn--outline" id="resetMotionBtn">
+              <i class="fas fa-redo"></i> تازه‌سازی
+            </button>
+          </div>
         </div>
 
         <div class="lesson-section">
@@ -96,6 +111,16 @@ const lessonContents = {
             <li><strong>تصمیم:</strong> تعیین حرکت بهتر</li>
             <li><strong>حرکت:</strong> انجام حرکت یا چرخش</li>
           </ol>
+          
+          <div class="lesson-canvas-container" id="chemotaxisCanvas"></div>
+          <div class="canvas-controls">
+            <button class="btn btn--sm btn--primary" id="startChemotaxisBtn">
+              <i class="fas fa-play"></i> شروع انیمیشن
+            </button>
+            <button class="btn btn--sm btn--outline" id="stopChemotaxisBtn">
+              <i class="fas fa-pause"></i> توقف
+            </button>
+          </div>
         </div>
 
         <div class="lesson-section">
@@ -122,6 +147,19 @@ const lessonContents = {
         <div class="lesson-section">
           <h3>چهار مرحله اصلی BFO</h3>
           <p>الگوریتم BFO شامل چهار عملیات بیولوژیکی است:</p>
+          
+          <div class="lesson-canvas-container" id="algorithmStepsCanvas"></div>
+          <div class="canvas-controls">
+            <button class="btn btn--sm btn--outline" id="prevStepBtn">
+              <i class="fas fa-arrow-right"></i> قبلی
+            </button>
+            <button class="btn btn--sm btn--primary" id="startStepsBtn">
+              <i class="fas fa-play"></i> شروع اتوماتیک
+            </button>
+            <button class="btn btn--sm btn--outline" id="nextStepBtn">
+              بعدی <i class="fas fa-arrow-left"></i>
+            </button>
+          </div>
         </div>
 
         <div class="lesson-section">
@@ -556,6 +594,170 @@ export function loadLessonContent(lessonId) {
   return content;
 }
 
+class EducationManager {
+  constructor() {
+    this.bacterialVisualizer = null;
+    this.behaviorVisualizer = null;
+    this.currentLesson = 'intro';
+  }
+
+  initializeVisualizers(lessonId) {
+    this.cleanupVisualizers();
+    
+    setTimeout(() => {
+      if (lessonId === 'bacteria') {
+        this.initBacteriaMotionViz();
+      } else if (lessonId === 'chemotaxis') {
+        this.initChemotaxisViz();
+      } else if (lessonId === 'algorithm') {
+        this.initAlgorithmStepsViz();
+      }
+    }, 100);
+  }
+
+  initBacteriaMotionViz() {
+    const canvasContainer = document.getElementById('bacteriaMotionCanvas');
+    if (!canvasContainer) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasContainer.offsetWidth;
+    canvas.height = 300;
+    canvasContainer.innerHTML = '';
+    canvasContainer.appendChild(canvas);
+
+    this.bacterialVisualizer = new BacterialVisualizer(canvas);
+    this.bacterialVisualizer.initBacteria(5);
+    this.bacterialVisualizer.draw();
+
+    const startBtn = document.getElementById('startMotionBtn');
+    const stopBtn = document.getElementById('stopMotionBtn');
+    const resetBtn = document.getElementById('resetMotionBtn');
+
+    if (startBtn) {
+      startBtn.addEventListener('click', () => {
+        this.bacterialVisualizer.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      });
+    }
+
+    if (stopBtn) {
+      stopBtn.addEventListener('click', () => {
+        this.bacterialVisualizer.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        this.bacterialVisualizer.reset();
+        this.bacterialVisualizer.start();
+      });
+    }
+  }
+
+  initChemotaxisViz() {
+    const canvasContainer = document.getElementById('chemotaxisCanvas');
+    if (!canvasContainer) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasContainer.offsetWidth;
+    canvas.height = 300;
+    canvasContainer.innerHTML = '';
+    canvasContainer.appendChild(canvas);
+
+    this.behaviorVisualizer = new BehaviorVisualizer(canvas);
+    this.behaviorVisualizer.showStep(0);
+
+    const startBtn = document.getElementById('startChemotaxisBtn');
+    const stopBtn = document.getElementById('stopChemotaxisBtn');
+
+    if (startBtn) {
+      startBtn.addEventListener('click', () => {
+        this.behaviorVisualizer.startAnimation();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      });
+    }
+
+    if (stopBtn) {
+      stopBtn.addEventListener('click', () => {
+        this.behaviorVisualizer.stopAnimation();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+      });
+    }
+  }
+
+  initAlgorithmStepsViz() {
+    const canvasContainer = document.getElementById('algorithmStepsCanvas');
+    if (!canvasContainer) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasContainer.offsetWidth;
+    canvas.height = 350;
+    canvasContainer.innerHTML = '';
+    canvasContainer.appendChild(canvas);
+
+    this.behaviorVisualizer = new BehaviorVisualizer(canvas);
+    this.behaviorVisualizer.showStep(0);
+
+    const prevBtn = document.getElementById('prevStepBtn');
+    const nextBtn = document.getElementById('nextStepBtn');
+    const startBtn = document.getElementById('startStepsBtn');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        this.behaviorVisualizer.stopAnimation();
+        this.behaviorVisualizer.prevStep();
+        startBtn.disabled = false;
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        this.behaviorVisualizer.stopAnimation();
+        this.behaviorVisualizer.nextStep();
+        startBtn.disabled = false;
+      });
+    }
+
+    if (startBtn) {
+      startBtn.addEventListener('click', () => {
+        this.behaviorVisualizer.startAnimation();
+        startBtn.disabled = true;
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+      });
+    }
+
+    const observer = new MutationObserver(() => {
+      if (!canvasContainer.contains(canvas)) {
+        this.cleanupVisualizers();
+      }
+    });
+
+    observer.observe(canvasContainer.parentElement, { childList: true, subtree: true });
+  }
+
+  cleanupVisualizers() {
+    if (this.bacterialVisualizer) {
+      this.bacterialVisualizer.stop();
+      this.bacterialVisualizer = null;
+    }
+
+    if (this.behaviorVisualizer) {
+      this.behaviorVisualizer.stopAnimation();
+      this.behaviorVisualizer = null;
+    }
+  }
+}
+
+const educationManager = new EducationManager();
+
 export default {
-  loadLessonContent
+  loadLessonContent,
+  educationManager,
+  EducationManager
 };
