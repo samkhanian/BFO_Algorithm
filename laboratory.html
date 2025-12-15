@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="بخش آزمایشگاه - پلتفرم آموزشی BFO" />
+    <title>بخش آزمایشگاه | آزمایشگاه تعاملی BFO</title>
+
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico" />
+    <link rel="stylesheet" href="src/ui/styles/variables.css" />
+    <link rel="stylesheet" href="src/ui/styles/base.css" />
+    <link rel="stylesheet" href="src/ui/styles/components.css" />
+    <link rel="stylesheet" href="src/ui/styles/responsive.css" />
+    <link rel="stylesheet" href="src/ui/styles/animations.css" />
+    <link rel="stylesheet" href="src/ui/styles/laboratory.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="navbar__container container flex-between">
+        <div class="navbar__logo">
+          <a href="/">
+            <i class="fas fa-dna"></i>
+            <span>BFO Lab</span>
+          </a>
+        </div>
+
+        <button class="navbar__toggle" id="navbarToggle" aria-label="فهرست ناویگیشن">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="navbar__menu" id="navbarMenu">
+          <li class="navbar__item">
+            <a href="/" class="navbar__link">
+              <i class="fas fa-home"></i>
+              <span>خانه</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="education.html" class="navbar__link">
+              <i class="fas fa-book"></i>
+              <span>آموزش</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="laboratory.html" class="navbar__link active" data-page="laboratory">
+              <i class="fas fa-flask"></i>
+              <span>آزمایشگاه</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="about.html" class="navbar__link">
+              <i class="fas fa-circle-info"></i>
+              <span>درباره</span>
+            </a>
+          </li>
+          <li class="navbar__item navbar__divider"></li>
+          <li class="navbar__item">
+            <button class="navbar__lang-toggle" id="langToggle" aria-label="تغییر زبان">
+              <i class="fas fa-globe"></i>
+              <span>EN</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="laboratory-main">
+      <!-- Sidebar -->
+      <aside class="lab-sidebar">
+        <!-- Scenario Selection -->
+        <section class="sidebar-section">
+          <h3 class="sidebar-section__title">
+            <i class="fas fa-layer-group"></i>
+            سناریو
+          </h3>
+
+          <div class="scenario-buttons">
+            <button class="btn btn--outline scenario-btn" data-scenario="beginner">
+              <i class="fas fa-leaf"></i>
+              <span>مبتدی</span>
+              <small>5 نقطه</small>
+            </button>
+            <button class="btn btn--outline scenario-btn" data-scenario="intermediate">
+              <i class="fas fa-seedling"></i>
+              <span>متوسط</span>
+              <small>10 نقطه</small>
+            </button>
+            <button class="btn btn--outline scenario-btn" data-scenario="advanced">
+              <i class="fas fa-tree"></i>
+              <span>پیشرفته</span>
+              <small>20 نقطه</small>
+            </button>
+            <button class="btn btn--outline scenario-btn" data-scenario="custom">
+              <i class="fas fa-sliders"></i>
+              <span>سفارشی</span>
+              <small>تنظیم شده</small>
+            </button>
+          </div>
+        </section>
+
+        <!-- Algorithm Parameters -->
+        <section class="sidebar-section">
+          <h3 class="sidebar-section__title">
+            <i class="fas fa-cog"></i>
+            پارامترها
+          </h3>
+
+          <div class="parameters-form">
+            <div class="input-group">
+              <label for="bacteriaCount">تعداد باکتری</label>
+              <input
+                type="range"
+                id="bacteriaCount"
+                class="input-range"
+                min="10"
+                max="200"
+                value="50"
+              />
+              <span id="bacteriaCountDisplay">50</span>
+            </div>
+
+            <div class="input-group">
+              <label for="chemoSteps">مراحل شیمی‌جویی</label>
+              <input
+                type="range"
+                id="chemoSteps"
+                class="input-range"
+                min="1"
+                max="50"
+                value="10"
+              />
+              <span id="chemoStepsDisplay">10</span>
+            </div>
+
+            <div class="input-group">
+              <label for="reproFreq">فرکانس تکثیر</label>
+              <input
+                type="range"
+                id="reproFreq"
+                class="input-range"
+                min="1"
+                max="100"
+                value="10"
+              />
+              <span id="reproFreqDisplay">10</span>
+            </div>
+
+            <div class="input-group">
+              <label for="edProb">احتمال حذف/پراکندگی</label>
+              <input
+                type="range"
+                id="edProb"
+                class="input-range"
+                min="0.01"
+                max="0.1"
+                step="0.01"
+                value="0.05"
+              />
+              <span id="edProbDisplay">0.05</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Control Buttons -->
+        <section class="sidebar-section">
+          <div class="control-buttons">
+            <button class="btn btn--primary" id="startSimBtn">
+              <i class="fas fa-play"></i>
+              شروع
+            </button>
+            <button class="btn btn--warning" id="pauseSimBtn" disabled>
+              <i class="fas fa-pause"></i>
+              توقف
+            </button>
+            <button class="btn btn--outline" id="resetSimBtn">
+              <i class="fas fa-redo"></i>
+              بازنشانی
+            </button>
+          </div>
+        </section>
+
+        <!-- Statistics Panel -->
+        <section class="sidebar-section">
+          <h3 class="sidebar-section__title">
+            <i class="fas fa-chart-line"></i>
+            آمار
+          </h3>
+
+          <div class="stats-panel">
+            <div class="stat-item">
+              <span class="stat-label">فاصله کل</span>
+              <span class="stat-value" id="totalDistance">---</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">تعداد مراحل</span>
+              <span class="stat-value" id="stepCount">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">بهترین Fitness</span>
+              <span class="stat-value" id="bestFitness">---</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">میزان بهبود</span>
+              <span class="stat-value" id="improvementPercent">0%</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Main Content Area -->
+      <div class="lab-content">
+        <!-- Canvas Area -->
+        <div class="canvas-container">
+          <canvas id="warehouseCanvas"></canvas>
+          <div class="canvas-controls">
+            <button class="btn btn--small" id="zoomInBtn" title="بزرگ‌نمایی">
+              <i class="fas fa-plus"></i>
+            </button>
+            <button class="btn btn--small" id="zoomOutBtn" title="کوچک‌نمایی">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button class="btn btn--small" id="resetViewBtn" title="بازنشانی نمایش">
+              <i class="fas fa-home"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="lab-tabs">
+          <div class="tabs-header">
+            <button class="tab-btn active" data-tab="comparison">
+              <i class="fas fa-code-branch"></i>
+              مقایسه
+            </button>
+            <button class="tab-btn" data-tab="tree">
+              <i class="fas fa-sitemap"></i>
+              درخت حالت
+            </button>
+            <button class="tab-btn" data-tab="metrics">
+              <i class="fas fa-chart-bar"></i>
+              معیارها
+            </button>
+            <button class="tab-btn" data-tab="export">
+              <i class="fas fa-download"></i>
+              صادرات
+            </button>
+          </div>
+
+          <!-- Comparison Tab -->
+          <div class="tab-content active" id="comparisonTab">
+            <div class="comparison-chart">
+              <canvas id="comparisonCanvas"></canvas>
+            </div>
+          </div>
+
+          <!-- State Tree Tab -->
+          <div class="tab-content" id="treeTab">
+            <div class="tree-visualization" id="treeVisualization">
+              <!-- D3.js tree will be rendered here -->
+            </div>
+          </div>
+
+          <!-- Metrics Tab -->
+          <div class="tab-content" id="metricsTab">
+            <div class="metrics-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>معیار</th>
+                    <th>مقدار</th>
+                    <th>شرح</th>
+                  </tr>
+                </thead>
+                <tbody id="metricsBody">
+                  <!-- Metrics will be filled dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Export Tab -->
+          <div class="tab-content" id="exportTab">
+            <div class="export-options">
+              <button class="btn btn--outline" id="exportJSON">
+                <i class="fas fa-file-code"></i>
+                صادرات JSON
+              </button>
+              <button class="btn btn--outline" id="exportCSV">
+                <i class="fas fa-file-csv"></i>
+                صادرات CSV
+              </button>
+              <button class="btn btn--outline" id="exportPNG">
+                <i class="fas fa-image"></i>
+                صادرات PNG
+              </button>
+              <button class="btn btn--outline" id="exportPDF">
+                <i class="fas fa-file-pdf"></i>
+                صادرات PDF
+              </button>
+              <button class="btn btn--outline" id="saveScenario">
+                <i class="fas fa-save"></i>
+                ذخیره سناریو
+              </button>
+              <button class="btn btn--outline" id="loadScenario">
+                <i class="fas fa-folder-open"></i>
+                بارگذاری سناریو
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 BFO Educational Platform | MIT License</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module" src="src/config/app-config.js"></script>
+  </body>
+</html>

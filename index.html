@@ -1,45 +1,294 @@
 <!DOCTYPE html>
-<html lang="fa">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الگوریتم جستجوی باکتریایی (BFO)</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header>
-  <h1>الگوریتم جستجوی باکتریایی (BFO)</h1>
-</header>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="پلتفرم آموزشی تعاملی الگوریتم BFO - الگوریتم جستجوی باکتریایی: از طبیعت تا بهینه‌سازی"
+    />
+    <meta name="theme-color" content="#2563eb" />
+    <title>آزمایشگاه تعاملی BFO | Bacterial Foraging Optimization</title>
 
-<main>
-  <section id="description">
-    <h2>توضیح الگوریتم</h2>
-    <p>
-      الگوریتم جستجوی باکتریایی (BFO) یک روش بهینه‌سازی الهام‌گرفته از رفتار باکتری‌ها است.  
-      باکتری‌ها با حرکت Chemotaxis به دنبال کمینه تابع هدف هستند،  
-      باکتری‌های موفق تکثیر می‌شوند و باکتری‌های ضعیف به صورت تصادفی پراکنده می‌شوند (Elimination/Dispersal) تا از گیر افتادن در مینیمم‌های محلی جلوگیری شود.
-    </p>
-  </section>
-<nav>
-  <!-- لینک به نسخه نمایشی شبیه‌ساز BFO -->
-  <a href="./bfo-sim.html" target="_blank" rel="noopener noreferrer">
-    🔬 نسخه نمایشی شبیه‌ساز BFO (نمایش گرافیکی)
-  </a>
-</nav>
-  <section id="algorithm-demo">
-    <h2>اجرای الگوریتم</h2>
-    <button id="runBFO">اجرا تا رسیدن به جواب</button>
-    <pre id="bfo-output"></pre>
-    <canvas id="bfoCanvas" width="600" height="200"></canvas>
-  </section>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico" />
 
-  <section id="flowchart-section">
-    <h2>درخت مراحل الگوریتم</h2>
-    <canvas id="flowchartCanvas" width="600" height="400"></canvas>
-  </section>
-</main>
+    <!-- Styles -->
+    <link rel="stylesheet" href="src/ui/styles/variables.css" />
+    <link rel="stylesheet" href="src/ui/styles/base.css" />
+    <link rel="stylesheet" href="src/ui/styles/components.css" />
+    <link rel="stylesheet" href="src/ui/styles/responsive.css" />
+    <link rel="stylesheet" href="src/ui/styles/animations.css" />
+    <link rel="stylesheet" href="src/ui/styles/index.css" />
 
-<script src="bfoAlgorithm.js"></script>
-<script src="script.js"></script>
-</body>
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="src/config/app-config.js" as="script" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="navbar__container container flex-between">
+        <div class="navbar__logo">
+          <a href="/">
+            <i class="fas fa-dna"></i>
+            <span>BFO Lab</span>
+          </a>
+        </div>
+
+        <button class="navbar__toggle" id="navbarToggle" aria-label="فهرست ناویگیشن">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="navbar__menu" id="navbarMenu">
+          <li class="navbar__item">
+            <a href="#" class="navbar__link active" data-page="home">
+              <i class="fas fa-home"></i>
+              <span>خانه</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="education.html" class="navbar__link" data-page="education">
+              <i class="fas fa-book"></i>
+              <span>آموزش</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="laboratory.html" class="navbar__link" data-page="laboratory">
+              <i class="fas fa-flask"></i>
+              <span>آزمایشگاه</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="about.html" class="navbar__link" data-page="about">
+              <i class="fas fa-circle-info"></i>
+              <span>درباره</span>
+            </a>
+          </li>
+          <li class="navbar__item navbar__divider"></li>
+          <li class="navbar__item">
+            <button class="navbar__lang-toggle" id="langToggle" aria-label="تغییر زبان">
+              <i class="fas fa-globe"></i>
+              <span>EN</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero__background">
+        <canvas id="heroCanvas" aria-hidden="true"></canvas>
+      </div>
+
+      <div class="container hero__content">
+        <div class="hero__text">
+          <h1 class="hero__title">الگوریتم جستجوی باکتریایی</h1>
+          <p class="hero__subtitle">
+            از طبیعت تا بهینه‌سازی: پلتفرم آموزشی تعاملی BFO
+          </p>
+          <p class="hero__description">
+            یادگیری نحوه انطباق باکتری‌ها در محیط و کاربرد این مفاهیم در حل مسائل
+            بهینه‌سازی پیچیده
+          </p>
+
+          <div class="hero__buttons">
+            <a href="education.html" class="btn btn--primary btn--large">
+              <i class="fas fa-play"></i>
+              شروع آموزش
+            </a>
+            <a href="laboratory.html" class="btn btn--secondary btn--large">
+              <i class="fas fa-flask"></i>
+              به آزمایشگاه بروید
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <h2 class="section__title">ویژگی‌های پلتفرم</h2>
+
+        <div class="features__grid grid grid--3">
+          <!-- Feature 1 -->
+          <div class="feature-card card">
+            <div class="feature-card__icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3 class="feature-card__title">آموزش تعاملی</h3>
+            <p class="feature-card__description">
+              یادگیری مراحل BFO از طریق انیمیشن‌های تعاملی و توضیحات بصری
+            </p>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="feature-card card">
+            <div class="feature-card__icon">
+              <i class="fas fa-microscope"></i>
+            </div>
+            <h3 class="feature-card__title">شبیه‌سازی عملی</h3>
+            <p class="feature-card__description">
+              آزمایش الگوریتم بر روی سناریوهای واقعی و مشاهده نتایج به صورت فوری
+            </p>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="feature-card card">
+            <div class="feature-card__icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="feature-card__title">تحلیل و مقایسه</h3>
+            <p class="feature-card__description">
+              مقایسه کارایی BFO با الگوریتم‌های دیگر و تحلیل معیارهای عملکرد
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="howItWorks">
+      <div class="container">
+        <h2 class="section__title">چگونه کار می‌کند؟</h2>
+
+        <div class="steps-grid grid grid--4">
+          <div class="step-item">
+            <div class="step-item__number">۱</div>
+            <h4 class="step-item__title">مقدمه و مفاهیم</h4>
+            <p>درآمد به دنیای باکتری‌ها و شیمی‌جویی</p>
+          </div>
+
+          <div class="step-item">
+            <div class="step-item__number">۲</div>
+            <h4 class="step-item__title">الگوریتم BFO</h4>
+            <p>درس دقیق چهار مرحله الگوریتم</p>
+          </div>
+
+          <div class="step-item">
+            <div class="step-item__number">۳</div>
+            <h4 class="step-item__title">مسئله TSP</h4>
+            <p>فهم مسئله فروشنده دوره‌گرد</p>
+          </div>
+
+          <div class="step-item">
+            <div class="step-item__number">۴</div>
+            <h4 class="step-item__title">نتایج و تحلیل</h4>
+            <p>بررسی نتایج و مقایسه الگوریتم‌ها</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats" id="stats">
+      <div class="container">
+        <div class="stats__grid grid grid--3">
+          <div class="stat-card">
+            <div class="stat-card__value" data-count="5">0</div>
+            <div class="stat-card__label">درس آموزشی</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__value" data-count="4">0</div>
+            <div class="stat-card__label">سناریو آزمایشگاه</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__value" data-count="100">0</div>
+            <div class="stat-card__label">نقطه شبیه‌سازی</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta" id="cta">
+      <div class="container cta__content">
+        <h2>آماده برای یادگیری هستید؟</h2>
+        <p>شروع یادگیری الگوریتم BFO و بهینه‌سازی مسائل دنیای واقعی</p>
+
+        <div class="cta__buttons">
+          <a href="education.html" class="btn btn--primary btn--large">
+            <i class="fas fa-rocket"></i>
+            شروع الان
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__content grid grid--3">
+          <!-- Footer Col 1 -->
+          <div class="footer__col">
+            <h4>درباره پروژه</h4>
+            <p>
+              پلتفرم آموزشی BFO، پروژه درس هوش مصنوعی تحت نظارت دکتر رویا
+              نمیرانیان
+            </p>
+            <p class="footer__credit">پیاده‌سازی: جمال سام‌خانیان</p>
+          </div>
+
+          <!-- Footer Col 2 -->
+          <div class="footer__col">
+            <h4>بخش‌های پلتفرم</h4>
+            <ul>
+              <li><a href="education.html">بخش آموزش</a></li>
+              <li><a href="laboratory.html">بخش آزمایشگاه</a></li>
+              <li><a href="about.html">درباره و منابع</a></li>
+            </ul>
+          </div>
+
+          <!-- Footer Col 3 -->
+          <div class="footer__col">
+            <h4>منابع</h4>
+            <ul>
+              <li>
+                <a href="#" target="_blank">
+                  مقاله اصلی BFO
+                </a>
+              </li>
+              <li>
+                <a href="#" target="_blank">
+                  مستندات GitHub
+                </a>
+              </li>
+              <li>
+                <a href="#" target="_blank">
+                  مراجع علمی
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer__bottom">
+          <p>&copy; 2025 BFO Educational Platform | MIT License</p>
+          <p>
+            دانشگاه <span id="universityName">---</span> | دوره هوش مصنوعی
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="src/config/app-config.js"></script>
+  </body>
 </html>

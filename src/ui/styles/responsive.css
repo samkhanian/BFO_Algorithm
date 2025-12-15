@@ -1,0 +1,265 @@
+/* Mobile-First Responsive Design */
+
+/* Tablet (768px and up) */
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-8);
+  }
+
+  .grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hidden-tablet {
+    display: none !important;
+  }
+
+  .visible-tablet {
+    display: block !important;
+  }
+
+  .btn {
+    padding: var(--spacing-3) var(--spacing-6);
+  }
+
+  .card {
+    padding: var(--spacing-8);
+  }
+}
+
+/* Desktop (1024px and up) */
+@media (min-width: 1024px) {
+  body {
+    font-size: var(--text-lg);
+  }
+
+  .container {
+    padding: 0 var(--spacing-12);
+  }
+
+  .grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .hidden-desktop {
+    display: none !important;
+  }
+
+  .visible-desktop {
+    display: block !important;
+  }
+
+  h1 {
+    font-size: clamp(2.25rem, 5vw, 3rem);
+  }
+
+  h2 {
+    font-size: clamp(1.875rem, 4vw, 2.25rem);
+  }
+}
+
+/* Large Desktop (1280px and up) */
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+/* Extra Large Desktop (1536px and up) */
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  body {
+    font-size: var(--text-lg);
+    line-height: 1.6;
+  }
+}
+
+/* Small Mobile (max-width: 640px) */
+@media (max-width: 640px) {
+  body {
+    font-size: var(--text-sm);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid--2,
+  .grid--3,
+  .grid--4 {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: var(--spacing-4);
+  }
+
+  .btn {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--text-sm);
+    width: 100%;
+  }
+
+  .btn--block {
+    width: 100%;
+  }
+
+  .container {
+    padding: 0 var(--spacing-3);
+  }
+
+  table {
+    font-size: var(--text-sm);
+  }
+
+  th,
+  td {
+    padding: var(--spacing-2) var(--spacing-3);
+  }
+}
+
+/* Touch Device Optimization */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  .btn,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .btn {
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+    padding: var(--spacing-3) var(--spacing-4);
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  a::after {
+    content: ' (' attr(href) ')';
+    color: #666;
+    font-size: 0.8em;
+  }
+
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+
+  table,
+  img {
+    page-break-inside: avoid;
+  }
+}
+
+/* Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+  .card {
+    background-color: var(--color-bg-elevation-1);
+    border-color: var(--color-border-dark);
+  }
+
+  .btn--outline {
+    border-color: var(--color-border-dark);
+  }
+
+  input,
+  select,
+  textarea {
+    background-color: var(--color-bg-elevation-1);
+    border-color: var(--color-border-dark);
+    color: var(--color-text-white);
+  }
+
+  .alert {
+    border-left-width: 4px;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: more) {
+  a {
+    text-decoration: underline;
+  }
+
+  button,
+  .btn {
+    border: 2px solid currentColor;
+  }
+
+  input,
+  select,
+  textarea {
+    border-width: 2px;
+  }
+
+  .card {
+    border-width: 2px;
+  }
+}

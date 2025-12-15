@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="درباره - پلتفرم آموزشی BFO" />
+    <title>درباره | آزمایشگاه تعاملی BFO</title>
+
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico" />
+    <link rel="stylesheet" href="src/ui/styles/variables.css" />
+    <link rel="stylesheet" href="src/ui/styles/base.css" />
+    <link rel="stylesheet" href="src/ui/styles/components.css" />
+    <link rel="stylesheet" href="src/ui/styles/responsive.css" />
+    <link rel="stylesheet" href="src/ui/styles/animations.css" />
+    <link rel="stylesheet" href="src/ui/styles/about.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="navbar__container container flex-between">
+        <div class="navbar__logo">
+          <a href="/">
+            <i class="fas fa-dna"></i>
+            <span>BFO Lab</span>
+          </a>
+        </div>
+
+        <button class="navbar__toggle" id="navbarToggle" aria-label="فهرست ناویگیشن">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="navbar__menu" id="navbarMenu">
+          <li class="navbar__item">
+            <a href="/" class="navbar__link">
+              <i class="fas fa-home"></i>
+              <span>خانه</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="education.html" class="navbar__link">
+              <i class="fas fa-book"></i>
+              <span>آموزش</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="laboratory.html" class="navbar__link">
+              <i class="fas fa-flask"></i>
+              <span>آزمایشگاه</span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a href="about.html" class="navbar__link active" data-page="about">
+              <i class="fas fa-circle-info"></i>
+              <span>درباره</span>
+            </a>
+          </li>
+          <li class="navbar__item navbar__divider"></li>
+          <li class="navbar__item">
+            <button class="navbar__lang-toggle" id="langToggle" aria-label="تغییر زبان">
+              <i class="fas fa-globe"></i>
+              <span>EN</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="about-main">
+      <!-- Header -->
+      <section class="about-header">
+        <div class="container">
+          <h1>درباره این پروژه</h1>
+          <p>
+            پلتفرم آموزشی تعاملی برای یادگیری الگوریتم جستجوی باکتریایی (BFO)
+          </p>
+        </div>
+      </section>
+
+      <!-- Content -->
+      <section class="about-content">
+        <div class="container">
+          <!-- Project Info -->
+          <div class="info-section">
+            <h2>اطلاعات پروژه</h2>
+
+            <div class="info-grid grid grid--2">
+              <div class="info-card card">
+                <h3>دوره و آموزگار</h3>
+                <ul>
+                  <li>
+                    <strong>دوره:</strong> هوش مصنوعی
+                  </li>
+                  <li>
+                    <strong>آموزگار:</strong> دکتر رویا نمیرانیان
+                  </li>
+                  <li>
+                    <strong>سال تحصیلی:</strong> 1402-1403
+                  </li>
+                </ul>
+              </div>
+
+              <div class="info-card card">
+                <h3>توسعه‌دهنده</h3>
+                <ul>
+                  <li>
+                    <strong>نام:</strong> جمال سام‌خانیان
+                  </li>
+                  <li>
+                    <strong>نسخه:</strong> 1.0 (Beta)
+                  </li>
+                  <li>
+                    <strong>لایسنس:</strong> MIT
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- About BFO -->
+          <div class="info-section">
+            <h2>درباره الگوریتم BFO</h2>
+            <p>
+              الگوریتم جستجوی باکتریایی (Bacterial Foraging Optimization) توسط
+              Kevin M. Passino در سال 2002 معرفی شد. این الگوریتم از رفتار
+              باکتری E. coli الهام می‌گیرد که برای یافتن منابع غذایی بهینه در
+              محیط خود حرکت می‌کند.
+            </p>
+
+            <h3>چهار مرحله اصلی:</h3>
+            <div class="steps-list">
+              <div class="step">
+                <h4>1. شیمی‌جویی (Chemotaxis)</h4>
+                <p>باکتری‌ها با اندازه‌گیری گرادیان مواد شیمیایی مسیر خود را مشخص می‌کنند.</p>
+              </div>
+              <div class="step">
+                <h4>2. حرکت گروهی (Swarming)</h4>
+                <p>
+                  باکتری‌های موفق سیگنال‌های جاذب‌کننده تولید می‌کنند تا سایر باکتری‌ها را جذب کنند.
+                </p>
+              </div>
+              <div class="step">
+                <h4>3. تکثیر (Reproduction)</h4>
+                <p>باکتری‌های بهتری که غذا بیشتری پیدا کرده‌اند تقسیم‌پذیر می‌شوند.</p>
+              </div>
+              <div class="step">
+                <h4>4. حذف و پراکندگی (Elimination & Dispersal)</h4>
+                <p>برخی از باکتری‌ها به‌طور تصادفی حذف می‌شوند تا اندیشه‌‌تازه وارد شود.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Learning Objectives -->
+          <div class="info-section">
+            <h2>اهداف یادگیری</h2>
+            <div class="objectives-list">
+              <div class="objective">
+                <i class="fas fa-check-circle"></i>
+                <span>درک مفاهیم بیولوژیکی پشت الگوریتم</span>
+              </div>
+              <div class="objective">
+                <i class="fas fa-check-circle"></i>
+                <span>یادگیری مراحل الگوریتم و پیاده‌سازی آن</span>
+              </div>
+              <div class="objective">
+                <i class="fas fa-check-circle"></i>
+                <span>کاربرد الگوریتم در حل مسائل بهینه‌سازی</span>
+              </div>
+              <div class="objective">
+                <i class="fas fa-check-circle"></i>
+                <span>تحلیل و مقایسه کارایی الگوریتم‌های مختلف</span>
+              </div>
+              <div class="objective">
+                <i class="fas fa-check-circle"></i>
+                <span>درک مفاهیم هوش مصنوعی و جستجوی فضای حالت</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div class="info-section">
+            <h2>ویژگی‌های پلتفرم</h2>
+
+            <div class="features-grid grid grid--2">
+              <div class="feature">
+                <h3>
+                  <i class="fas fa-book"></i>
+                  بخش آموزش
+                </h3>
+                <ul>
+                  <li>انیمیشن‌های تعاملی</li>
+                  <li>توضیحات بصری</li>
+                  <li>کد حی و Pseudocode</li>
+                  <li>۵ درس جامع</li>
+                </ul>
+              </div>
+
+              <div class="feature">
+                <h3>
+                  <i class="fas fa-flask"></i>
+                  بخش آزمایشگاه
+                </h3>
+                <ul>
+                  <li>شبیه‌سازی انبار 2D</li>
+                  <li>سناریوهای مختلف</li>
+                  <li>درخت حالت D3.js</li>
+                  <li>معیارهای عملکرد</li>
+                </ul>
+              </div>
+
+              <div class="feature">
+                <h3>
+                  <i class="fas fa-chart-line"></i>
+                  تحلیل و مقایسه
+                </h3>
+                <ul>
+                  <li>مقایسه با GA و PSO</li>
+                  <li>نمودارهای کارایی</li>
+                  <li>تحلیل پیچیدگی</li>
+                  <li>آمار تفصیلی</li>
+                </ul>
+              </div>
+
+              <div class="feature">
+                <h3>
+                  <i class="fas fa-download"></i>
+                  صادرات و ذخیره
+                </h3>
+                <ul>
+                  <li>صادرات JSON</li>
+                  <li>صادرات CSV</li>
+                  <li>عکس‌برداری PNG</li>
+                  <li>ذخیره‌سازی محلی</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Technologies -->
+          <div class="info-section">
+            <h2>تکنولوژی‌های استفاده‌شده</h2>
+
+            <div class="tech-grid grid grid--3">
+              <div class="tech-card">
+                <h3>Frontend</h3>
+                <ul>
+                  <li>HTML5</li>
+                  <li>CSS3 (Flexbox/Grid)</li>
+                  <li>JavaScript ES6+</li>
+                  <li>Canvas API</li>
+                </ul>
+              </div>
+
+              <div class="tech-card">
+                <h3>Libraries</h3>
+                <ul>
+                  <li>D3.js v7</li>
+                  <li>FontAwesome 6</li>
+                  <li>Vazirmatn Font</li>
+                  <li>Fetch API</li>
+                </ul>
+              </div>
+
+              <div class="tech-card">
+                <h3>Tools</h3>
+                <ul>
+                  <li>Vite</li>
+                  <li>ESLint</li>
+                  <li>Prettier</li>
+                  <li>Git</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- References -->
+          <div class="info-section">
+            <h2>منابع و مراجع</h2>
+
+            <div class="references-list">
+              <div class="reference">
+                <h4>مقاله اصلی BFO</h4>
+                <p>
+                  Passino, K. M. (2002). Biomimicry of Bacterial Foraging for Distributed
+                  Optimization and Control. IEEE Control Systems Magazine, 22(3), 52-67.
+                </p>
+              </div>
+
+              <div class="reference">
+                <h4>کتاب‌های مربوط</h4>
+                <p>
+                  Russell, S. J., & Norvig, P. (2020). Artificial Intelligence: A Modern
+                  Approach (4th ed.). Pearson.
+                </p>
+              </div>
+
+              <div class="reference">
+                <h4>منابع اضافی</h4>
+                <p>
+                  مجموعه مقالات کنفرانس‌های بین‌المللی در زمینه الگوریتم‌های الهام‌گرفته از
+                  طبیعت و بهینه‌سازی.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Team -->
+          <div class="info-section">
+            <h2>تیم پروژه</h2>
+
+            <div class="team-grid grid grid--3">
+              <div class="team-member card">
+                <div class="team-member__icon">
+                  <i class="fas fa-chalkboard-user"></i>
+                </div>
+                <h3>دکتر رویا نمیرانیان</h3>
+                <p class="team-member__role">مدرس درس</p>
+                <p class="text-muted text-sm">نظارت و راهنمایی پروژه</p>
+              </div>
+
+              <div class="team-member card">
+                <div class="team-member__icon">
+                  <i class="fas fa-code"></i>
+                </div>
+                <h3>جمال سام‌خانیان</h3>
+                <p class="team-member__role">توسعه‌دهنده</p>
+                <p class="text-muted text-sm">طراحی و پیاده‌سازی کامل</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- License -->
+          <div class="info-section">
+            <h2>لایسنس</h2>
+            <div class="license-card card">
+              <p>
+                این پروژه تحت لایسنس MIT منتشر شده است. شما می‌توانید این کد را به‌صورت آزاد
+                استفاده، تغییر و توزیع کنید، به شرطی که متن لایسنس و کپی‌رایت را حفظ کنید.
+              </p>
+              <p>
+                <strong>کپی‌رایت:</strong> © 2025 جمال سام‌خانیان
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="about-cta">
+        <div class="container">
+          <h2>آماده برای شروع هستید؟</h2>
+          <div class="cta-buttons">
+            <a href="education.html" class="btn btn--primary btn--large">
+              شروع آموزش
+            </a>
+            <a href="laboratory.html" class="btn btn--secondary btn--large">
+              به آزمایشگاه بروید
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 BFO Educational Platform | MIT License</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="src/config/app-config.js"></script>
+  </body>
+</html>
